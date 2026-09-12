@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState, useCallback, useEffect } from "react";
 import Image from "next/image";
 
 const gearItems = [
@@ -13,7 +13,11 @@ const gearItems = [
     description:
       "Full-frame sensor, 4K 120fps, S-Log3. Built for run-and-gun filmmaking with cinema-grade internals in a compact body.",
     specs: ["Full-Frame 10.2MP", "4K 120fps", "S-Log3 / S-Cinetone", "Dual Card Slots"],
-    image: "/gear/sony-fx3.jpg",
+    image: "/gear/sony-fx3.png",
+    imageW: 900,
+    imageH: 600,
+    span: "col-span-2 row-span-1" as const,
+    accent: "#c8ff00",
   },
   {
     id: "2470",
@@ -21,9 +25,13 @@ const gearItems = [
     category: "Lens",
     tagline: "The versatile king of glass",
     description:
-      "From wide concert shots to tight artist portraits — razor-sharp optics with buttery bokeh. The lens that never comes off the camera.",
-    specs: ["f/2.8 Constant Aperture", "Nano AR Coating II", "XD Linear Motors", "695g Lightweight"],
-    image: "/gear/sony-2470gm.jpg",
+      "From wide concert shots to tight artist portraits — razor-sharp optics with buttery bokeh.",
+    specs: ["f/2.8 Constant", "Nano AR Coating II", "XD Linear Motors", "695g"],
+    image: "/gear/sony-2470gm.png",
+    imageW: 800,
+    imageH: 500,
+    span: "col-span-1 row-span-2" as const,
+    accent: "#ff6b35",
   },
   {
     id: "rs5",
@@ -31,9 +39,13 @@ const gearItems = [
     category: "Gimbal Stabilizer",
     tagline: "Buttery smooth motion",
     description:
-      "3-axis stabilization that turns shaky handheld footage into cinema-grade steady shots. Briefcase handle and focus motor included.",
-    specs: ["3-Axis Stabilization", "2.5kg Payload", "Focus Motor Included", "1-Hour Full Charge"],
-    image: "/gear/dji-rs5.jpg",
+      "3-axis stabilization that turns shaky handheld footage into cinema-grade steady shots.",
+    specs: ["3-Axis Stabilization", "2.5kg Payload", "Focus Motor", "1Hr Full Charge"],
+    image: "/gear/dji-rs5.png",
+    imageW: 500,
+    imageH: 700,
+    span: "col-span-1 row-span-1" as const,
+    accent: "#00d4ff",
   },
   {
     id: "insta360",
@@ -41,9 +53,13 @@ const gearItems = [
     category: "360° Action Camera",
     tagline: "Capture everything, reframe later",
     description:
-      "360-degree capture means I never miss a moment. Shoot first, choose the angle in post. Perfect for immersive concert coverage.",
-    specs: ["5.7K 360° Video", "72MP Photos", "FlowState Stabilization", "Waterproof 10m"],
-    image: "/gear/insta360-x3.jpg",
+      "360-degree capture means I never miss a moment. Shoot first, choose the angle in post.",
+    specs: ["5.7K 360°", "72MP Photos", "FlowState", "Waterproof 10m"],
+    image: "/gear/insta360-x3.png",
+    imageW: 600,
+    imageH: 600,
+    span: "col-span-1 row-span-1" as const,
+    accent: "#a855f7",
   },
   {
     id: "handycam",
@@ -51,144 +67,212 @@ const gearItems = [
     category: "Camcorder",
     tagline: "Always ready to roll",
     description:
-      "Sometimes you need a camera that's always on standby. Captures behind-the-scenes moments, b-roll, and spontaneous footage.",
-    specs: ["Optical Zoom", "SteadyShot", "NightShot Plus", "Compact Form Factor"],
-    image: "/gear/handycam.jpg",
+      "Captures behind-the-scenes moments, b-roll, and spontaneous footage on the go.",
+    specs: ["Optical Zoom", "SteadyShot", "NightShot Plus", "Compact"],
+    image: "/gear/handycam.png",
+    imageW: 700,
+    imageH: 450,
+    span: "col-span-2 row-span-1" as const,
+    accent: "#f43f5e",
   },
 ];
 
-function GearCard({
+function MagneticCard({
   item,
   index,
 }: {
   item: (typeof gearItems)[0];
   index: number;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-50px" });
+  const cardRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(cardRef, { once: true, margin: "-80px" });
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseMove = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
-      if (!ref.current) return;
-      const rect = ref.current.getBoundingClientRect();
+      if (!cardRef.current) return;
+      const rect = cardRef.current.getBoundingClientRect();
       const x = (e.clientX - rect.left) / rect.width - 0.5;
       const y = (e.clientY - rect.top) / rect.height - 0.5;
-      setMousePos({ x: x * 25, y: y * 25 });
+      setMousePos({ x, y });
     },
     []
   );
 
   return (
     <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 60 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      ref={cardRef}
+      initial={{ opacity: 0, y: 80, scale: 0.95 }}
+      animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
       transition={{
-        duration: 0.8,
-        delay: index * 0.12,
+        duration: 0.7,
+        delay: index * 0.1,
         ease: [0.25, 0.46, 0.45, 0.94],
       }}
-      className="group relative flex-shrink-0 w-[300px] md:w-[380px] lg:w-[440px]"
+      className={`group relative rounded-2xl overflow-hidden cursor-pointer ${item.span}`}
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
         setIsHovered(false);
         setMousePos({ x: 0, y: 0 });
       }}
+      style={{ perspective: 800 }}
     >
-      {/* Image container with 3D tilt */}
+      {/* Card background */}
       <motion.div
-        className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-[#111] mb-6"
+        className="absolute inset-0 bg-[#0c0c0c] rounded-2xl"
         animate={{
-          rotateX: isHovered ? -mousePos.y * 0.4 : 0,
-          rotateY: isHovered ? mousePos.x * 0.4 : 0,
-          scale: isHovered ? 1.02 : 1,
+          rotateX: isHovered ? -mousePos.y * 8 : 0,
+          rotateY: isHovered ? mousePos.x * 8 : 0,
         }}
-        transition={{ type: "spring", stiffness: 200, damping: 25 }}
-        style={{ perspective: 1000 }}
+        transition={{ type: "spring", stiffness: 200, damping: 30 }}
       >
-        {/* The actual image */}
-        <Image
-          src={item.image}
-          alt={item.name}
-          fill
-          className="object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-110"
-          sizes="(max-width: 768px) 300px, (max-width: 1200px) 380px, 440px"
-        />
-
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
-
-        {/* Glow effect on hover */}
-        <motion.div
-          className="absolute inset-0 pointer-events-none"
-          animate={{
-            opacity: isHovered ? 1 : 0,
-          }}
-          transition={{ duration: 0.3 }}
+        {/* Subtle grid texture */}
+        <div
+          className="absolute inset-0 opacity-[0.03] pointer-events-none"
           style={{
-            background: `radial-gradient(circle at ${50 + mousePos.x * 2}% ${50 + mousePos.y * 2}%, rgba(200,255,0,0.15) 0%, transparent 60%)`,
+            backgroundImage:
+              "radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px)",
+            backgroundSize: "20px 20px",
           }}
         />
+      </motion.div>
 
-        {/* Shine sweep on hover */}
+      {/* Glow border on hover */}
+      <motion.div
+        className="absolute inset-0 rounded-2xl pointer-events-none"
+        animate={{
+          opacity: isHovered ? 1 : 0,
+        }}
+        transition={{ duration: 0.3 }}
+        style={{
+          boxShadow: `inset 0 0 0 1px ${item.accent}33, 0 0 40px ${item.accent}15`,
+        }}
+      />
+
+      {/* Big index number watermark */}
+      <div className="absolute top-4 right-6 text-[120px] md:text-[160px] font-black leading-none select-none pointer-events-none"
+        style={{ color: `${item.accent}08` }}
+      >
+        {String(index + 1).padStart(2, "0")}
+      </div>
+
+      {/* Product image — floating with magnetic follow */}
+      <motion.div
+        className="absolute inset-0 flex items-center justify-center z-10 p-6 md:p-10"
+        animate={{
+          x: isHovered ? mousePos.x * 20 : 0,
+          y: isHovered ? mousePos.y * 20 : 0,
+        }}
+        transition={{ type: "spring", stiffness: 150, damping: 20 }}
+      >
         <motion.div
-          className="absolute inset-0 pointer-events-none"
+          className="relative w-full h-full"
           animate={{
-            x: isHovered ? "200%" : "-100%",
+            y: isHovered ? -6 : [0, -8, 0],
+            scale: isHovered ? 1.08 : 1,
           }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
+          transition={
+            isHovered
+              ? { type: "spring", stiffness: 200, damping: 20 }
+              : { duration: 4, repeat: Infinity, ease: "easeInOut" }
+          }
+        >
+          <Image
+            src={item.image}
+            alt={item.name}
+            width={item.imageW}
+            height={item.imageH}
+            className="w-full h-full object-contain"
+            style={{
+              filter: isHovered
+                ? `drop-shadow(0 0 30px ${item.accent}30) drop-shadow(0 20px 40px rgba(0,0,0,0.6))`
+                : "drop-shadow(0 10px 25px rgba(0,0,0,0.5))",
+              transition: "filter 0.4s ease",
+            }}
+          />
+        </motion.div>
+      </motion.div>
+
+      {/* Top-left category tag */}
+      <motion.div
+        className="absolute top-5 left-5 z-20"
+        initial={{ opacity: 0, x: -20 }}
+        animate={isInView ? { opacity: 1, x: 0 } : {}}
+        transition={{ delay: 0.3 + index * 0.1 }}
+      >
+        <div
+          className="px-3 py-1 rounded-full text-[10px] tracking-[0.2em] uppercase font-medium backdrop-blur-md"
           style={{
-            background:
-              "linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.06) 45%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0.06) 55%, transparent 60%)",
-            width: "200%",
+            color: item.accent,
+            background: `${item.accent}15`,
+            border: `1px solid ${item.accent}25`,
           }}
-        />
-
-        {/* Bottom content on image */}
-        <div className="absolute bottom-0 left-0 right-0 p-6">
-          <div className="text-[#c8ff00] text-[11px] tracking-[0.3em] uppercase mb-2 font-medium">
-            {item.category}
-          </div>
-          <h3 className="text-xl md:text-2xl font-bold text-white tracking-tight">
-            {item.name}
-          </h3>
-        </div>
-
-        {/* Index number */}
-        <div className="absolute top-4 right-4 text-[80px] font-bold leading-none text-white/[0.04] select-none">
-          {String(index + 1).padStart(2, "0")}
+        >
+          {item.category}
         </div>
       </motion.div>
 
-      {/* Info below image */}
+      {/* Bottom info panel — slides up on hover */}
       <motion.div
-        className="px-1"
+        className="absolute bottom-0 left-0 right-0 z-20 p-5 md:p-6"
         animate={{
-          y: isHovered ? -4 : 0,
+          y: isHovered ? 0 : 20,
+          opacity: isHovered ? 1 : 0.7,
         }}
         transition={{ duration: 0.3 }}
       >
-        <p className="text-[#c8ff00]/70 text-sm italic mb-2">{item.tagline}</p>
-        <p className="text-[#999] text-sm leading-relaxed mb-4 line-clamp-2">
-          {item.description}
-        </p>
-        <div className="flex flex-wrap gap-2">
-          {item.specs.map((spec, i) => (
-            <motion.span
-              key={spec}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={isInView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ delay: 0.4 + i * 0.06 }}
-              className="px-3 py-1.5 rounded-full border border-white/8 bg-white/[0.02] text-[10px] tracking-wider text-[#888] transition-all duration-300 group-hover:border-[#c8ff00]/20 group-hover:text-[#c8ff00]/80"
-            >
-              {spec}
-            </motion.span>
-          ))}
+        <div className="backdrop-blur-md bg-black/40 rounded-xl p-4 border border-white/5">
+          <h3 className="text-lg md:text-xl font-bold text-white tracking-tight mb-1">
+            {item.name}
+          </h3>
+          <p
+            className="text-xs italic mb-3"
+            style={{ color: `${item.accent}aa` }}
+          >
+            {item.tagline}
+          </p>
+
+          {/* Specs — animate in on hover */}
+          <div className="flex flex-wrap gap-1.5">
+            {item.specs.map((spec, i) => (
+              <motion.span
+                key={spec}
+                initial={{ opacity: 0, scale: 0.8, y: 10 }}
+                animate={
+                  isHovered
+                    ? { opacity: 1, scale: 1, y: 0 }
+                    : { opacity: 0.5, scale: 0.95, y: 5 }
+                }
+                transition={{ delay: i * 0.05, duration: 0.25 }}
+                className="px-2.5 py-1 rounded-full text-[9px] tracking-wider font-medium"
+                style={{
+                  color: `${item.accent}cc`,
+                  background: `${item.accent}10`,
+                  border: `1px solid ${item.accent}20`,
+                }}
+              >
+                {spec}
+              </motion.span>
+            ))}
+          </div>
         </div>
       </motion.div>
+
+      {/* Shine sweep on hover */}
+      <motion.div
+        className="absolute inset-0 pointer-events-none z-30"
+        animate={{
+          x: isHovered ? "200%" : "-100%",
+        }}
+        transition={{ duration: 0.7, ease: "easeInOut" }}
+        style={{
+          background:
+            "linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.04) 45%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 55%, transparent 60%)",
+          width: "200%",
+        }}
+      />
     </motion.div>
   );
 }
@@ -209,17 +293,26 @@ export default function Gear() {
       ref={sectionRef}
       className="py-24 md:py-32 relative overflow-hidden"
     >
-      {/* Background grid */}
-      <div
-        className="absolute inset-0 opacity-[0.02] pointer-events-none"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
-          backgroundSize: "80px 80px",
-        }}
-      />
+      {/* Background radial glow */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full opacity-[0.03]"
+          style={{
+            background: "radial-gradient(circle, #c8ff00 0%, transparent 70%)",
+          }}
+        />
+      </div>
 
-      <div className="px-6 md:px-12 mb-12 relative z-10">
+      {/* Vertical scroll line */}
+      <div className="absolute left-6 md:left-12 top-0 bottom-0 w-[1px] bg-white/5">
+        <motion.div
+          className="w-full bg-[#c8ff00]/30"
+          style={{ height: lineHeight }}
+        />
+      </div>
+
+      {/* Section header */}
+      <div className="px-6 md:px-12 mb-16 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -241,38 +334,23 @@ export default function Gear() {
         </motion.div>
       </div>
 
-      {/* Horizontal scrolling gear showcase */}
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={isInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.8, delay: 0.2 }}
-        className="relative z-10"
-      >
-        <div
-          className="flex gap-8 overflow-x-auto px-6 md:px-12 pb-8"
-          style={{
-            scrollbarWidth: "none",
-            msOverflowStyle: "none",
-            WebkitOverflowScrolling: "touch",
-          }}
-        >
+      {/* Bento grid layout */}
+      <div className="px-6 md:px-12 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5 auto-rows-[280px] md:auto-rows-[320px]">
           {gearItems.map((item, i) => (
-            <GearCard key={item.id} item={item} index={i} />
+            <MagneticCard key={item.id} item={item} index={i} />
           ))}
-          {/* End spacer */}
-          <div className="flex-shrink-0 w-6 md:w-12" />
         </div>
-      </motion.div>
-
-      {/* Scroll indicator dots */}
-      <div className="flex justify-center gap-2 mt-4">
-        {gearItems.map((_, i) => (
-          <div
-            key={i}
-            className="w-2 h-2 rounded-full bg-white/10 first:bg-[#c8ff00]/50"
-          />
-        ))}
       </div>
+
+      {/* Bottom accent line */}
+      <motion.div
+        className="mt-16 mx-6 md:mx-12 h-[1px] bg-white/5"
+        initial={{ scaleX: 0 }}
+        animate={isInView ? { scaleX: 1 } : {}}
+        transition={{ duration: 1.2, delay: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+        style={{ transformOrigin: "left" }}
+      />
     </section>
   );
 }
