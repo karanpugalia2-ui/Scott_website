@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
-import { useRef, useState, useCallback, useEffect } from "react";
+import { useRef, useState, useCallback } from "react";
 import Image from "next/image";
 
 const gearItems = [
@@ -16,7 +16,9 @@ const gearItems = [
     image: "/gear/sony-fx3.png",
     imageW: 900,
     imageH: 600,
-    span: "col-span-2 row-span-1" as const,
+    span: "md:col-span-2",
+    height: "h-[260px] md:h-[340px]",
+    link: "https://electronics.sony.com/imaging/camcorders/all-camcorders/p/ilme-fx3",
     accent: "#c8ff00",
   },
   {
@@ -28,9 +30,11 @@ const gearItems = [
       "3-axis stabilization that turns shaky handheld footage into cinema-grade steady shots.",
     specs: ["3-Axis Stabilization", "2.5kg Payload", "Focus Motor", "1Hr Full Charge"],
     image: "/gear/dji-rs5.png",
-    imageW: 500,
-    imageH: 700,
-    span: "col-span-1 row-span-2" as const,
+    imageW: 400,
+    imageH: 650,
+    span: "md:row-span-2",
+    height: "h-[300px] md:h-full",
+    link: "https://store.dji.com/product/dji-rs-5",
     accent: "#00d4ff",
   },
   {
@@ -42,9 +46,11 @@ const gearItems = [
       "From wide concert shots to tight artist portraits — razor-sharp optics with buttery bokeh.",
     specs: ["f/2.8 Constant", "Nano AR Coating II", "XD Linear Motors", "695g"],
     image: "/gear/sony-2470gm.png",
-    imageW: 800,
-    imageH: 500,
-    span: "col-span-1 row-span-1" as const,
+    imageW: 700,
+    imageH: 450,
+    span: "",
+    height: "h-[220px] md:h-[260px]",
+    link: "https://electronics.sony.com/imaging/lenses/all-e-mount/p/sel2470gm2",
     accent: "#ff6b35",
   },
   {
@@ -56,9 +62,11 @@ const gearItems = [
       "360-degree capture means I never miss a moment. Shoot first, choose the angle in post.",
     specs: ["5.7K 360°", "72MP Photos", "FlowState", "Waterproof 10m"],
     image: "/gear/insta360-x3.png",
-    imageW: 600,
-    imageH: 600,
-    span: "col-span-1 row-span-1" as const,
+    imageW: 550,
+    imageH: 550,
+    span: "",
+    height: "h-[220px] md:h-[260px]",
+    link: "https://www.insta360.com/product/insta360-x3",
     accent: "#a855f7",
   },
   {
@@ -70,27 +78,29 @@ const gearItems = [
       "Captures behind-the-scenes moments, b-roll, and spontaneous footage on the go.",
     specs: ["Optical Zoom", "SteadyShot", "NightShot Plus", "Compact"],
     image: "/gear/handycam.png",
-    imageW: 700,
-    imageH: 450,
-    span: "col-span-2 row-span-1" as const,
+    imageW: 650,
+    imageH: 400,
+    span: "md:col-span-2",
+    height: "h-[220px] md:h-[260px]",
+    link: "https://electronics.sony.com/imaging/camcorders/all-camcorders/p/fdrax43a-b",
     accent: "#f43f5e",
   },
 ];
 
-function MagneticCard({
+function GearCard({
   item,
   index,
 }: {
   item: (typeof gearItems)[0];
   index: number;
 }) {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(cardRef, { once: true, margin: "-80px" });
+  const cardRef = useRef<HTMLAnchorElement>(null);
+  const isInView = useInView(cardRef, { once: true, margin: "-60px" });
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseMove = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
+    (e: React.MouseEvent) => {
       if (!cardRef.current) return;
       const rect = cardRef.current.getBoundingClientRect();
       const x = (e.clientX - rect.left) / rect.width - 0.5;
@@ -101,16 +111,19 @@ function MagneticCard({
   );
 
   return (
-    <motion.div
+    <motion.a
       ref={cardRef}
-      initial={{ opacity: 0, y: 80, scale: 0.95 }}
+      href={item.link}
+      target="_blank"
+      rel="noopener noreferrer"
+      initial={{ opacity: 0, y: 60, scale: 0.96 }}
       animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
       transition={{
-        duration: 0.7,
-        delay: index * 0.1,
+        duration: 0.6,
+        delay: index * 0.08,
         ease: [0.25, 0.46, 0.45, 0.94],
       }}
-      className={`group relative rounded-2xl overflow-hidden cursor-pointer ${item.span}`}
+      className={`group relative rounded-2xl overflow-hidden cursor-pointer bg-[#0c0c0c] ${item.span} ${item.height} block`}
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
@@ -119,16 +132,15 @@ function MagneticCard({
       }}
       style={{ perspective: 800 }}
     >
-      {/* Card background */}
+      {/* 3D tilt background */}
       <motion.div
-        className="absolute inset-0 bg-[#0c0c0c] rounded-2xl"
+        className="absolute inset-0 rounded-2xl"
         animate={{
-          rotateX: isHovered ? -mousePos.y * 8 : 0,
-          rotateY: isHovered ? mousePos.x * 8 : 0,
+          rotateX: isHovered ? -mousePos.y * 6 : 0,
+          rotateY: isHovered ? mousePos.x * 6 : 0,
         }}
         transition={{ type: "spring", stiffness: 200, damping: 30 }}
       >
-        {/* Subtle grid texture */}
         <div
           className="absolute inset-0 opacity-[0.03] pointer-events-none"
           style={{
@@ -141,37 +153,28 @@ function MagneticCard({
 
       {/* Glow border on hover */}
       <motion.div
-        className="absolute inset-0 rounded-2xl pointer-events-none"
-        animate={{
-          opacity: isHovered ? 1 : 0,
-        }}
+        className="absolute inset-0 rounded-2xl pointer-events-none z-40"
+        animate={{ opacity: isHovered ? 1 : 0 }}
         transition={{ duration: 0.3 }}
         style={{
-          boxShadow: `inset 0 0 0 1px ${item.accent}33, 0 0 40px ${item.accent}15`,
+          boxShadow: `inset 0 0 0 1px ${item.accent}44, 0 0 30px ${item.accent}12`,
         }}
       />
 
-      {/* Big index number watermark */}
-      <div className="absolute top-4 right-6 text-[120px] md:text-[160px] font-black leading-none select-none pointer-events-none"
-        style={{ color: `${item.accent}08` }}
-      >
-        {String(index + 1).padStart(2, "0")}
-      </div>
-
-      {/* Product image — floating with magnetic follow */}
+      {/* Product image */}
       <motion.div
-        className="absolute inset-0 flex items-center justify-center z-10 p-6 md:p-10"
+        className="absolute inset-0 flex items-center justify-center z-10 p-4 md:p-6"
         animate={{
-          x: isHovered ? mousePos.x * 20 : 0,
-          y: isHovered ? mousePos.y * 20 : 0,
+          x: isHovered ? mousePos.x * 15 : 0,
+          y: isHovered ? mousePos.y * 15 : 0,
         }}
         transition={{ type: "spring", stiffness: 150, damping: 20 }}
       >
         <motion.div
           className="relative w-full h-full"
           animate={{
-            y: isHovered ? -6 : [0, -8, 0],
-            scale: isHovered ? 1.08 : 1,
+            y: isHovered ? -4 : [0, -6, 0],
+            scale: isHovered ? 1.06 : 1,
           }}
           transition={
             isHovered
@@ -187,93 +190,105 @@ function MagneticCard({
             className="w-full h-full object-contain"
             style={{
               filter: isHovered
-                ? `drop-shadow(0 0 30px ${item.accent}30) drop-shadow(0 20px 40px rgba(0,0,0,0.6))`
-                : "drop-shadow(0 10px 25px rgba(0,0,0,0.5))",
+                ? `drop-shadow(0 0 25px ${item.accent}25) drop-shadow(0 15px 30px rgba(0,0,0,0.6))`
+                : "drop-shadow(0 8px 20px rgba(0,0,0,0.4))",
               transition: "filter 0.4s ease",
             }}
           />
         </motion.div>
       </motion.div>
 
-      {/* Top-left category tag */}
-      <motion.div
-        className="absolute top-5 left-5 z-20"
-        initial={{ opacity: 0, x: -20 }}
-        animate={isInView ? { opacity: 1, x: 0 } : {}}
-        transition={{ delay: 0.3 + index * 0.1 }}
-      >
+      {/* Category tag — top left */}
+      <div className="absolute top-3 left-3 z-30">
         <div
-          className="px-3 py-1 rounded-full text-[10px] tracking-[0.2em] uppercase font-medium backdrop-blur-md"
+          className="px-2.5 py-0.5 rounded-full text-[9px] tracking-[0.18em] uppercase font-medium backdrop-blur-md"
           style={{
             color: item.accent,
-            background: `${item.accent}15`,
-            border: `1px solid ${item.accent}25`,
+            background: `${item.accent}12`,
+            border: `1px solid ${item.accent}22`,
           }}
         >
           {item.category}
         </div>
-      </motion.div>
+      </div>
 
-      {/* Bottom info panel — slides up on hover */}
-      <motion.div
-        className="absolute bottom-0 left-0 right-0 z-20 p-5 md:p-6"
-        animate={{
-          y: isHovered ? 0 : 20,
-          opacity: isHovered ? 1 : 0.7,
-        }}
-        transition={{ duration: 0.3 }}
+      {/* Watermark number */}
+      <div
+        className="absolute top-2 right-4 text-[80px] md:text-[100px] font-black leading-none select-none pointer-events-none z-0"
+        style={{ color: `${item.accent}06` }}
       >
-        <div className="backdrop-blur-md bg-black/40 rounded-xl p-4 border border-white/5">
-          <h3 className="text-lg md:text-xl font-bold text-white tracking-tight mb-1">
+        {String(index + 1).padStart(2, "0")}
+      </div>
+
+      {/* Bottom: Name always visible, details on hover */}
+      <div className="absolute bottom-0 left-0 right-0 z-30">
+        {/* Name — always visible */}
+        <div className="px-4 pb-3 md:px-5 md:pb-4">
+          <h3 className="text-sm md:text-base font-bold text-white tracking-tight">
             {item.name}
           </h3>
+        </div>
+
+        {/* Details panel — slides up on hover */}
+        <motion.div
+          className="px-4 pb-4 md:px-5 md:pb-5"
+          initial={false}
+          animate={{
+            y: isHovered ? 0 : 20,
+            opacity: isHovered ? 1 : 0,
+          }}
+          transition={{ duration: 0.25, ease: "easeOut" }}
+          style={{ pointerEvents: isHovered ? "auto" : "none" }}
+        >
           <p
-            className="text-xs italic mb-3"
-            style={{ color: `${item.accent}aa` }}
+            className="text-[11px] italic mb-2"
+            style={{ color: `${item.accent}bb` }}
           >
             {item.tagline}
           </p>
-
-          {/* Specs — animate in on hover */}
+          <p className="text-[11px] text-[#888] leading-relaxed mb-2.5 line-clamp-2">
+            {item.description}
+          </p>
           <div className="flex flex-wrap gap-1.5">
             {item.specs.map((spec, i) => (
               <motion.span
                 key={spec}
-                initial={{ opacity: 0, scale: 0.8, y: 10 }}
+                initial={false}
                 animate={
                   isHovered
                     ? { opacity: 1, scale: 1, y: 0 }
-                    : { opacity: 0.5, scale: 0.95, y: 5 }
+                    : { opacity: 0, scale: 0.9, y: 8 }
                 }
-                transition={{ delay: i * 0.05, duration: 0.25 }}
-                className="px-2.5 py-1 rounded-full text-[9px] tracking-wider font-medium"
+                transition={{ delay: i * 0.04, duration: 0.2 }}
+                className="px-2 py-0.5 rounded-full text-[8px] tracking-wider font-medium"
                 style={{
                   color: `${item.accent}cc`,
                   background: `${item.accent}10`,
-                  border: `1px solid ${item.accent}20`,
+                  border: `1px solid ${item.accent}18`,
                 }}
               >
                 {spec}
               </motion.span>
             ))}
           </div>
-        </div>
-      </motion.div>
+        </motion.div>
+      </div>
 
-      {/* Shine sweep on hover */}
+      {/* Dark gradient at bottom for text readability */}
+      <div className="absolute bottom-0 left-0 right-0 h-[60%] bg-gradient-to-t from-black/70 via-black/30 to-transparent pointer-events-none z-20" />
+
+      {/* Shine sweep */}
       <motion.div
-        className="absolute inset-0 pointer-events-none z-30"
-        animate={{
-          x: isHovered ? "200%" : "-100%",
-        }}
-        transition={{ duration: 0.7, ease: "easeInOut" }}
+        className="absolute inset-0 pointer-events-none z-40"
+        animate={{ x: isHovered ? "200%" : "-100%" }}
+        transition={{ duration: 0.6, ease: "easeInOut" }}
         style={{
           background:
             "linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.04) 45%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 55%, transparent 60%)",
           width: "200%",
         }}
       />
-    </motion.div>
+    </motion.a>
   );
 }
 
@@ -312,7 +327,7 @@ export default function Gear() {
       </div>
 
       {/* Section header */}
-      <div className="px-6 md:px-12 mb-16 relative z-10">
+      <div className="px-6 md:px-12 mb-12 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -334,18 +349,18 @@ export default function Gear() {
         </motion.div>
       </div>
 
-      {/* Bento grid layout */}
+      {/* Bento grid — all 5 gears fit */}
       <div className="px-6 md:px-12 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5 auto-rows-[280px] md:auto-rows-[320px]">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
           {gearItems.map((item, i) => (
-            <MagneticCard key={item.id} item={item} index={i} />
+            <GearCard key={item.id} item={item} index={i} />
           ))}
         </div>
       </div>
 
       {/* Bottom accent line */}
       <motion.div
-        className="mt-16 mx-6 md:mx-12 h-[1px] bg-white/5"
+        className="mt-12 mx-6 md:mx-12 h-[1px] bg-white/5"
         initial={{ scaleX: 0 }}
         animate={isInView ? { scaleX: 1 } : {}}
         transition={{ duration: 1.2, delay: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
