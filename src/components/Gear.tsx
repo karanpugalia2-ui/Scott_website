@@ -16,24 +16,9 @@ const gearItems = [
     image: "/gear/sony-fx3.png",
     imageW: 900,
     imageH: 600,
-    span: "md:col-span-2",
+    span: "",
     link: "https://electronics.sony.com/imaging/camcorders/all-camcorders/p/ilme-fx3",
     accent: "#c8ff00",
-  },
-  {
-    id: "rs5",
-    name: "DJI RS 5 Combo",
-    category: "Gimbal Stabilizer",
-    tagline: "Buttery smooth motion",
-    description:
-      "3-axis stabilization that turns shaky handheld footage into cinema-grade steady shots.",
-    specs: ["3-Axis Stabilization", "2.5kg Payload", "Focus Motor", "1Hr Full Charge"],
-    image: "/gear/dji-rs5.png",
-    imageW: 350,
-    imageH: 550,
-    span: "",
-    link: "https://store.dji.com/product/dji-rs-5",
-    accent: "#00d4ff",
   },
   {
     id: "2470",
@@ -80,6 +65,21 @@ const gearItems = [
     link: "https://electronics.sony.com/imaging/camcorders/all-camcorders/p/fdrax43a-b",
     accent: "#f43f5e",
   },
+  {
+    id: "rs5",
+    name: "DJI RS 5 Combo",
+    category: "Gimbal Stabilizer",
+    tagline: "Buttery smooth motion",
+    description:
+      "3-axis stabilization that turns shaky handheld footage into cinema-grade steady shots.",
+    specs: ["3-Axis Stabilization", "2.5kg Payload", "Focus Motor", "1Hr Full Charge"],
+    image: "/gear/dji-rs5.png",
+    imageW: 350,
+    imageH: 550,
+    span: "",
+    link: "https://store.dji.com/product/dji-rs-5",
+    accent: "#00d4ff",
+  },
 ];
 
 function GearCard({
@@ -118,7 +118,7 @@ function GearCard({
         delay: index * 0.08,
         ease: [0.25, 0.46, 0.45, 0.94],
       }}
-      className={`group relative rounded-2xl overflow-hidden cursor-pointer bg-[#0c0c0c] ${item.span} block`}
+      className={`group relative rounded-2xl overflow-hidden cursor-pointer bg-[#0c0c0c] ${item.span} block h-full`}
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
@@ -301,7 +301,7 @@ export default function Gear() {
     <section
       id="gear"
       ref={sectionRef}
-      className="py-24 md:py-32 relative overflow-hidden"
+      className="py-24 md:py-32 relative"
     >
       {/* Background radial glow */}
       <div className="absolute inset-0 pointer-events-none">
@@ -344,12 +344,19 @@ export default function Gear() {
         </motion.div>
       </div>
 
-      {/* Bento grid — all 5 gears in 2 rows */}
+      {/* Gear layout — 2×2 grid left + tall gimbal right */}
       <div className="px-6 md:px-12 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 auto-rows-[220px] md:auto-rows-[280px]">
-          {gearItems.map((item, i) => (
-            <GearCard key={item.id} item={item} index={i} />
-          ))}
+        <div className="gear-layout">
+          {/* Left: 2×2 grid */}
+          <div className="gear-grid-left">
+            {gearItems.filter((i) => i.id !== "rs5").map((item, i) => (
+              <GearCard key={item.id} item={item} index={i} />
+            ))}
+          </div>
+          {/* Right: tall gimbal */}
+          <div className="gear-grid-right">
+            <GearCard item={gearItems.find((i) => i.id === "rs5")!} index={4} />
+          </div>
         </div>
       </div>
 
