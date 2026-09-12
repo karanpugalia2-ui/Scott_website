@@ -156,20 +156,20 @@ function GearCard({
         }}
       />
 
-      {/* Product image — stops above the name area */}
+      {/* Product image — fills entire card */}
       <motion.div
-        className="absolute top-0 left-0 right-0 h-[70%] flex items-center justify-center z-10 p-4 md:p-6"
+        className="absolute inset-0 flex items-center justify-center z-10 p-6 md:p-8"
         animate={{
-          x: isHovered ? mousePos.x * 15 : 0,
-          y: isHovered ? mousePos.y * 15 : 0,
+          x: isHovered ? mousePos.x * 12 : 0,
+          y: isHovered ? mousePos.y * 12 : 0,
+          scale: isHovered ? 0.92 : 1,
         }}
         transition={{ type: "spring", stiffness: 150, damping: 20 }}
       >
         <motion.div
           className="relative w-full h-full"
           animate={{
-            y: isHovered ? -4 : [0, -6, 0],
-            scale: isHovered ? 1.06 : 1,
+            y: isHovered ? 0 : [0, -6, 0],
           }}
           transition={
             isHovered
@@ -185,7 +185,7 @@ function GearCard({
             className="w-full h-full object-contain"
             style={{
               filter: isHovered
-                ? `drop-shadow(0 0 25px ${item.accent}25) drop-shadow(0 15px 30px rgba(0,0,0,0.6))`
+                ? `drop-shadow(0 0 25px ${item.accent}20) drop-shadow(0 15px 30px rgba(0,0,0,0.5))`
                 : "drop-shadow(0 8px 20px rgba(0,0,0,0.4))",
               transition: "filter 0.4s ease",
             }}
@@ -215,33 +215,40 @@ function GearCard({
         {String(index + 1).padStart(2, "0")}
       </div>
 
-      {/* Bottom: Name always visible, details on hover */}
-      <div className="absolute bottom-0 left-0 right-0 z-30">
-        {/* Name — always visible */}
-        <div className="px-4 pb-2 md:px-5 md:pb-3">
-          <h3 className="text-sm md:text-base font-bold text-white tracking-tight">
-            {item.name}
-          </h3>
-        </div>
+      {/* Bottom: Name always visible */}
+      <div className="absolute bottom-0 left-0 right-0 z-30 px-4 pb-3 md:px-5 md:pb-4">
+        <h3 className="text-sm md:text-base font-bold text-white tracking-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
+          {item.name}
+        </h3>
+      </div>
 
-        {/* Details panel — slides up on hover */}
-        <motion.div
-          className="px-4 pb-4 md:px-5 md:pb-5"
-          initial={false}
-          animate={{
-            y: isHovered ? 0 : 20,
-            opacity: isHovered ? 1 : 0,
+      {/* Hover popup overlay — centered on card */}
+      <motion.div
+        className="absolute inset-0 z-35 flex items-center justify-center"
+        initial={false}
+        animate={{
+          opacity: isHovered ? 1 : 0,
+        }}
+        transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+      >
+        {/* Dark backdrop */}
+        <div className="absolute inset-0 bg-black/60 rounded-2xl" />
+        {/* Popup content */}
+        <div
+          className="relative rounded-xl p-4 md:p-5 w-[85%] backdrop-blur-xl"
+          style={{
+            background: `linear-gradient(135deg, ${item.accent}10, rgba(12,12,12,0.95))`,
+            border: `1px solid ${item.accent}28`,
+            boxShadow: `0 25px 60px rgba(0,0,0,0.7), 0 0 40px ${item.accent}08`,
           }}
-          transition={{ duration: 0.25, ease: "easeOut" }}
-          style={{ pointerEvents: isHovered ? "auto" : "none" }}
         >
           <p
-            className="text-[11px] italic mb-2"
-            style={{ color: `${item.accent}bb` }}
+            className="text-[10px] md:text-xs italic mb-1.5 font-medium"
+            style={{ color: item.accent }}
           >
             {item.tagline}
           </p>
-          <p className="text-[11px] text-[#888] leading-relaxed mb-2.5 line-clamp-2">
+          <p className="text-[10px] md:text-[11px] text-[#aaa] leading-relaxed mb-3 line-clamp-3">
             {item.description}
           </p>
           <div className="flex flex-wrap gap-1.5">
@@ -252,25 +259,25 @@ function GearCard({
                 animate={
                   isHovered
                     ? { opacity: 1, scale: 1, y: 0 }
-                    : { opacity: 0, scale: 0.9, y: 8 }
+                    : { opacity: 0, scale: 0.8, y: 6 }
                 }
-                transition={{ delay: i * 0.04, duration: 0.2 }}
-                className="px-2 py-0.5 rounded-full text-[8px] tracking-wider font-medium"
+                transition={{ delay: i * 0.05, duration: 0.25 }}
+                className="px-2 py-0.5 rounded-full text-[8px] md:text-[9px] tracking-wider font-medium"
                 style={{
                   color: `${item.accent}cc`,
-                  background: `${item.accent}10`,
-                  border: `1px solid ${item.accent}18`,
+                  background: `${item.accent}12`,
+                  border: `1px solid ${item.accent}20`,
                 }}
               >
                 {spec}
               </motion.span>
             ))}
           </div>
-        </motion.div>
-      </div>
+        </div>
+      </motion.div>
 
-      {/* Dark gradient at bottom for text readability */}
-      <div className="absolute bottom-0 left-0 right-0 h-[40%] bg-gradient-to-t from-black/80 via-black/40 to-transparent pointer-events-none z-20" />
+      {/* Dark gradient at bottom for name readability */}
+      <div className="absolute bottom-0 left-0 right-0 h-[30%] bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none z-20" />
 
       {/* Shine sweep */}
       <motion.div
