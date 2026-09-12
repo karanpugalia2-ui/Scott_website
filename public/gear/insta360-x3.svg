@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" fill="none">
+  <!-- Insta360 X3 -->
+  <g stroke="#c8ff00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Main body -->
+    <rect x="155" y="40" width="80" height="200" rx="16" />
+    <!-- Lens top -->
+    <circle cx="195" cy="72" r="24" />
+    <circle cx="195" cy="72" r="18" stroke-opacity="0.4" />
+    <circle cx="195" cy="72" r="10" fill="#c8ff00" fill-opacity="0.08" />
+    <circle cx="195" cy="72" r="4" fill="#c8ff00" fill-opacity="0.2" />
+    <!-- Lens highlight -->
+    <path d="M183 62 Q195 58 207 62" stroke-opacity="0.3" />
+    <!-- Screen -->
+    <rect x="165" y="110" width="60" height="70" rx="6" />
+    <rect x="169" y="114" width="52" height="62" rx="4" stroke-opacity="0.3" />
+    <!-- Screen content (play icon) -->
+    <polygon points="191,138 191,162 210,150" fill="#c8ff00" fill-opacity="0.12" stroke="#c8ff00" stroke-opacity="0.3" />
+    <!-- Button below screen -->
+    <circle cx="195" cy="195" r="8" />
+    <circle cx="195" cy="195" r="5" stroke-opacity="0.4" />
+    <!-- Mic holes -->
+    <circle cx="178" cy="210" r="1.5" fill="#c8ff00" fill-opacity="0.3" />
+    <circle cx="185" cy="210" r="1.5" fill="#c8ff00" fill-opacity="0.3" />
+    <circle cx="192" cy="210" r="1.5" fill="#c8ff00" fill-opacity="0.3" />
+    <!-- USB port -->
+    <rect x="185" y="230" width="20" height="6" rx="2" stroke-opacity="0.3" />
+    <!-- Lens bottom (stitch line) -->
+    <line x1="195" y1="96" x2="195" y2="108" stroke-opacity="0.2" stroke-dasharray="2 2" />
+    <!-- Side buttons -->
+    <rect x="148" y="130" width="7" height="20" rx="2" stroke-opacity="0.4" />
+    <rect x="148" y="158" width="7" height="12" rx="2" stroke-opacity="0.4" />
+  </g>
+  <!-- Label -->
+  <text x="200" y="270" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#c8ff00" text-anchor="middle" letter-spacing="3">INSTA360 X3</text>
+  <text x="200" y="286" font-family="system-ui, sans-serif" font-size="9" fill="#666" text-anchor="middle" letter-spacing="2">360° ACTION CAM</text>
+</svg>

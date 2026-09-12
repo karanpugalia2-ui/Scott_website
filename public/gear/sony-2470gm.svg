@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" fill="none">
+  <!-- Sony 24-70mm f/2.8 GM II Lens -->
+  <g stroke="#c8ff00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Lens barrel outer -->
+    <rect x="120" y="60" width="160" height="180" rx="12" />
+    <!-- Focus ring -->
+    <rect x="125" y="70" width="150" height="35" rx="6" />
+    <line x1="135" y1="72" x2="135" y2="103" stroke-opacity="0.3" />
+    <line x1="145" y1="72" x2="145" y2="103" stroke-opacity="0.3" />
+    <line x1="155" y1="72" x2="155" y2="103" stroke-opacity="0.3" />
+    <line x1="165" y1="72" x2="165" y2="103" stroke-opacity="0.3" />
+    <line x1="175" y1="72" x2="175" y2="103" stroke-opacity="0.3" />
+    <line x1="185" y1="72" x2="185" y2="103" stroke-opacity="0.3" />
+    <line x1="195" y1="72" x2="195" y2="103" stroke-opacity="0.3" />
+    <line x1="205" y1="72" x2="205" y2="103" stroke-opacity="0.3" />
+    <line x1="215" y1="72" x2="215" y2="103" stroke-opacity="0.3" />
+    <line x1="225" y1="72" x2="225" y2="103" stroke-opacity="0.3" />
+    <line x1="235" y1="72" x2="235" y2="103" stroke-opacity="0.3" />
+    <line x1="245" y1="72" x2="245" y2="103" stroke-opacity="0.3" />
+    <line x1="255" y1="72" x2="255" y2="103" stroke-opacity="0.3" />
+    <line x1="260" y1="72" x2="260" y2="103" stroke-opacity="0.3" />
+    <!-- Zoom ring -->
+    <rect x="125" y="115" width="150" height="40" rx="6" />
+    <text x="200" y="140" font-family="system-ui, sans-serif" font-size="10" fill="#c8ff00" fill-opacity="0.5" text-anchor="middle">24 — 70</text>
+    <!-- Width markings -->
+    <line x1="135" y1="117" x2="135" y2="153" stroke-opacity="0.2" />
+    <line x1="155" y1="117" x2="155" y2="153" stroke-opacity="0.2" />
+    <line x1="175" y1="117" x2="175" y2="153" stroke-opacity="0.2" />
+    <line x1="200" y1="117" x2="200" y2="153" stroke-opacity="0.2" />
+    <line x1="225" y1="117" x2="225" y2="153" stroke-opacity="0.2" />
+    <line x1="245" y1="117" x2="245" y2="153" stroke-opacity="0.2" />
+    <line x1="265" y1="117" x2="265" y2="153" stroke-opacity="0.2" />
+    <!-- Aperture ring -->
+    <rect x="125" y="165" width="150" height="25" rx="4" />
+    <text x="200" y="182" font-family="system-ui, sans-serif" font-size="9" fill="#c8ff00" fill-opacity="0.4" text-anchor="middle">f/2.8</text>
+    <!-- Front element -->
+    <ellipse cx="200" cy="220" rx="65" ry="15" />
+    <ellipse cx="200" cy="220" rx="50" ry="10" stroke-opacity="0.4" />
+    <ellipse cx="200" cy="220" rx="30" ry="6" fill="#c8ff00" fill-opacity="0.08" />
+    <!-- Mount -->
+    <rect x="130" y="235" width="140" height="8" rx="2" />
+  </g>
+  <!-- Label -->
+  <text x="200" y="270" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#c8ff00" text-anchor="middle" letter-spacing="3">FE 24-70mm</text>
+  <text x="200" y="286" font-family="system-ui, sans-serif" font-size="9" fill="#666" text-anchor="middle" letter-spacing="2">f/2.8 GM II</text>
+</svg>

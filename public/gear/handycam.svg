@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" fill="none">
+  <!-- Handycam / Camcorder -->
+  <g stroke="#c8ff00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Main body -->
+    <rect x="60" y="90" width="200" height="100" rx="8" />
+    <!-- Viewfinder -->
+    <rect x="240" y="70" width="40" height="35" rx="4" />
+    <rect x="260" y="65" width="20" height="10" rx="3" />
+    <!-- Lens barrel -->
+    <rect x="30" y="105" width="35" height="70" rx="6" />
+    <circle cx="48" cy="140" r="28" />
+    <circle cx="48" cy="140" r="22" stroke-opacity="0.4" />
+    <circle cx="48" cy="140" r="14" fill="#c8ff00" fill-opacity="0.06" />
+    <circle cx="48" cy="140" r="6" fill="#c8ff00" fill-opacity="0.15" />
+    <!-- Lens rings -->
+    <line x1="65" y1="115" x2="65" y2="165" stroke-opacity="0.2" />
+    <line x1="58" y1="112" x2="58" y2="168" stroke-opacity="0.15" />
+    <!-- LCD screen (swung out) -->
+    <rect x="80" y="195" width="110" height="70" rx="4" />
+    <rect x="85" y="200" width="100" height="60" rx="3" stroke-opacity="0.3" />
+    <!-- Screen hinge -->
+    <line x1="80" y1="190" x2="80" y2="195" />
+    <line x1="190" y1="190" x2="190" y2="195" />
+    <!-- Recording button -->
+    <circle cx="220" cy="105" r="8" />
+    <circle cx="220" cy="105" r="4" fill="#c8ff00" fill-opacity="0.4" />
+    <!-- Top controls -->
+    <rect x="100" y="82" width="40" height="10" rx="2" stroke-opacity="0.3" />
+    <rect x="150" y="82" width="25" height="10" rx="2" stroke-opacity="0.3" />
+    <!-- Zoom rocker -->
+    <rect x="100" y="92" width="30" height="6" rx="3" stroke-opacity="0.4" />
+    <!-- Mic on top -->
+    <rect x="70" y="80" width="25" height="12" rx="3" />
+    <line x1="75" y1="83" x2="75" y2="89" stroke-opacity="0.2" />
+    <line x1="80" y1="83" x2="80" y2="89" stroke-opacity="0.2" />
+    <line x1="85" y1="83" x2="85" y2="89" stroke-opacity="0.2" />
+    <line x1="90" y1="83" x2="90" y2="89" stroke-opacity="0.2" />
+    <!-- Hand strap -->
+    <path d="M260 110 Q280 110 280 130 Q280 150 260 150" stroke-opacity="0.3" />
+    <!-- Battery -->
+    <rect x="255" y="100" width="15" height="40" rx="3" stroke-opacity="0.3" />
+  </g>
+  <!-- Label -->
+  <text x="200" y="278" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#c8ff00" text-anchor="middle" letter-spacing="3">HANDYCAM</text>
+  <text x="200" y="294" font-family="system-ui, sans-serif" font-size="9" fill="#666" text-anchor="middle" letter-spacing="2">CAMCORDER</text>
+</svg>
