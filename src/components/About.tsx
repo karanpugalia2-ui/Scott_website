@@ -107,12 +107,12 @@ export default function About() {
                 transition={{ delay: 0.4 }}
                 className="text-[#ccc]"
               >
-                My journey in visual storytelling began in{" "}
-                <span className="text-[#ededed] font-medium">Class 9</span>,
-                when I started creating images with nothing more than a{" "}
-                <span className="text-[#c8ff00]">mobile phone</span>. I began
-                by photographing the streets around me — developing an early
-                understanding of composition, light, and storytelling.
+                My journey began in{" "}
+                <span className="text-[#ededed] font-medium">Class 9</span>{" "}
+                with nothing more than a{" "}
+                <span className="text-[#c8ff00]">mobile phone</span> —
+                photographing the streets of Daman and learning composition,
+                light, and storytelling.
               </motion.p>
 
               <motion.p
@@ -121,22 +121,9 @@ export default function About() {
                 transition={{ delay: 0.5 }}
                 className="text-[#999]"
               >
-                Over time, this passion evolved into opportunities to work with
-                cafés, bakeries, and local businesses, where I gained my first
-                experience working on real projects and understanding the
-                discipline behind professional visual production.
-              </motion.p>
-
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: 0.6 }}
-                className="text-[#999]"
-              >
-                Before completing Class 12, I decided to pursue filmmaking
-                professionally and joined film school to gain broader exposure.
-                During this period, I explored different areas of filmmaking and
-                gradually discovered my strongest interest in{" "}
+                This passion evolved into work with cafés and local businesses,
+                and before completing Class 12, I joined film school — where I
+                discovered my strongest interest in{" "}
                 <em className="text-[#c8ff00] not-italic font-medium">
                   concerts, live events, and artists
                 </em>
@@ -146,37 +133,22 @@ export default function About() {
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: 0.6 }}
+                className="text-[#999]"
+              >
+                Over 4–5 years of consistent work, I kept investing in my craft
+                and saving from my own earnings — eventually purchasing my first
+                professional camera entirely through my own work.
+              </motion.p>
+
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: 0.7 }}
-                className="text-[#999]"
-              >
-                I began attending college shows and live productions, studying
-                how events were produced and how visual stories could be
-                captured within the energy and unpredictability of a live
-                environment. With time, these experiences led to opportunities
-                to work professionally in the concert and live-event space.
-              </motion.p>
-
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: 0.8 }}
-                className="text-[#999]"
-              >
-                Over the course of 4–5 years of consistent work, I continued
-                investing in my craft, building experience, and saving from my
-                own earnings. Eventually, I purchased my first professional
-                camera entirely through my own work — a milestone that marked an
-                important step in my journey.
-              </motion.p>
-
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: 0.9 }}
                 className="text-[#ccc] text-xl md:text-2xl font-medium leading-relaxed"
               >
-                From a mobile phone to professional cinema equipment — the
-                journey has always been driven by one thing —{" "}
+                From a mobile phone to professional cinema equipment — driven by
+                one thing:{" "}
                 <em className="text-[#c8ff00] not-italic">
                   the desire to create
                 </em>
