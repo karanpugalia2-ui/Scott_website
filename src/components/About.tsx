@@ -2,6 +2,7 @@
 
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import Image from "next/image";
 
 const stats = [
   { label: "Concerts Shot", value: "50+" },
@@ -79,6 +80,23 @@ export default function About() {
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
+            {/* Profile photo */}
+            <motion.div
+              className="relative w-48 h-48 md:w-56 md:h-56 rounded-2xl overflow-hidden mb-10 group"
+              whileHover={{ scale: 1.03 }}
+              transition={{ duration: 0.4 }}
+            >
+              <Image
+                src="/scott.jpeg"
+                alt="Scott — Karan Pugalia"
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-110"
+                sizes="224px"
+              />
+              <div className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-2xl" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#c8ff00]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            </motion.div>
+
             <p className="text-lg md:text-xl text-[#ccc] leading-relaxed mb-8">
               Hey, I&apos;m <span className="text-[#c8ff00] font-semibold">Scott</span>{" "}
               <span className="text-[#999]">(Karan Pugalia)</span> — a

@@ -33,6 +33,7 @@ export const metadata: Metadata = {
     title: "SCOTT — Photography & Videography",
     description: "Capturing raw emotions through the lens.",
     type: "website",
+    images: ["/scott.jpeg"],
   },
 };
 

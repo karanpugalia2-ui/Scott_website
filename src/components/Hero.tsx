@@ -35,9 +35,9 @@ export default function Hero() {
           className="w-full h-full object-cover"
           poster="/work/chaar-diwari/1.jpg"
         />
-        {/* Lighter overlay for readability while keeping video visible */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/70 via-[#0a0a0a]/20 to-[#0a0a0a]/10" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a]/40 to-transparent" />
+        {/* Minimal overlay — just enough for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/50 via-transparent to-[#0a0a0a]/10" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a]/20 to-transparent" />
       </motion.div>
 
       {/* Content */}
