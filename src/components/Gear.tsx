@@ -17,7 +17,6 @@ const gearItems = [
     imageW: 900,
     imageH: 600,
     span: "md:col-span-2",
-    height: "h-[260px] md:h-[340px]",
     link: "https://electronics.sony.com/imaging/camcorders/all-camcorders/p/ilme-fx3",
     accent: "#c8ff00",
   },
@@ -30,10 +29,9 @@ const gearItems = [
       "3-axis stabilization that turns shaky handheld footage into cinema-grade steady shots.",
     specs: ["3-Axis Stabilization", "2.5kg Payload", "Focus Motor", "1Hr Full Charge"],
     image: "/gear/dji-rs5.png",
-    imageW: 400,
-    imageH: 650,
-    span: "md:row-span-2",
-    height: "h-[300px] md:h-full",
+    imageW: 350,
+    imageH: 550,
+    span: "",
     link: "https://store.dji.com/product/dji-rs-5",
     accent: "#00d4ff",
   },
@@ -46,10 +44,9 @@ const gearItems = [
       "From wide concert shots to tight artist portraits — razor-sharp optics with buttery bokeh.",
     specs: ["f/2.8 Constant", "Nano AR Coating II", "XD Linear Motors", "695g"],
     image: "/gear/sony-2470gm.png",
-    imageW: 700,
-    imageH: 450,
+    imageW: 650,
+    imageH: 400,
     span: "",
-    height: "h-[220px] md:h-[260px]",
     link: "https://electronics.sony.com/imaging/lenses/all-e-mount/p/sel2470gm2",
     accent: "#ff6b35",
   },
@@ -62,10 +59,9 @@ const gearItems = [
       "360-degree capture means I never miss a moment. Shoot first, choose the angle in post.",
     specs: ["5.7K 360°", "72MP Photos", "FlowState", "Waterproof 10m"],
     image: "/gear/insta360-x3.png",
-    imageW: 550,
-    imageH: 550,
+    imageW: 450,
+    imageH: 450,
     span: "",
-    height: "h-[220px] md:h-[260px]",
     link: "https://www.insta360.com/product/insta360-x3",
     accent: "#a855f7",
   },
@@ -78,10 +74,9 @@ const gearItems = [
       "Captures behind-the-scenes moments, b-roll, and spontaneous footage on the go.",
     specs: ["Optical Zoom", "SteadyShot", "NightShot Plus", "Compact"],
     image: "/gear/handycam.png",
-    imageW: 650,
-    imageH: 400,
-    span: "md:col-span-2",
-    height: "h-[220px] md:h-[260px]",
+    imageW: 550,
+    imageH: 350,
+    span: "",
     link: "https://electronics.sony.com/imaging/camcorders/all-camcorders/p/fdrax43a-b",
     accent: "#f43f5e",
   },
@@ -123,7 +118,7 @@ function GearCard({
         delay: index * 0.08,
         ease: [0.25, 0.46, 0.45, 0.94],
       }}
-      className={`group relative rounded-2xl overflow-hidden cursor-pointer bg-[#0c0c0c] ${item.span} ${item.height} block`}
+      className={`group relative rounded-2xl overflow-hidden cursor-pointer bg-[#0c0c0c] ${item.span} block`}
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
@@ -349,9 +344,9 @@ export default function Gear() {
         </motion.div>
       </div>
 
-      {/* Bento grid — all 5 gears fit */}
+      {/* Bento grid — all 5 gears in 2 rows */}
       <div className="px-6 md:px-12 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 auto-rows-[220px] md:auto-rows-[280px]">
           {gearItems.map((item, i) => (
             <GearCard key={item.id} item={item} index={i} />
           ))}
