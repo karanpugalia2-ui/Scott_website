@@ -156,9 +156,9 @@ function GearCard({
         }}
       />
 
-      {/* Product image */}
+      {/* Product image — stops above the name area */}
       <motion.div
-        className="absolute inset-0 flex items-center justify-center z-10 p-4 md:p-6"
+        className="absolute top-0 left-0 right-0 h-[70%] flex items-center justify-center z-10 p-4 md:p-6"
         animate={{
           x: isHovered ? mousePos.x * 15 : 0,
           y: isHovered ? mousePos.y * 15 : 0,
@@ -218,7 +218,7 @@ function GearCard({
       {/* Bottom: Name always visible, details on hover */}
       <div className="absolute bottom-0 left-0 right-0 z-30">
         {/* Name — always visible */}
-        <div className="px-4 pb-3 md:px-5 md:pb-4">
+        <div className="px-4 pb-2 md:px-5 md:pb-3">
           <h3 className="text-sm md:text-base font-bold text-white tracking-tight">
             {item.name}
           </h3>
@@ -270,7 +270,7 @@ function GearCard({
       </div>
 
       {/* Dark gradient at bottom for text readability */}
-      <div className="absolute bottom-0 left-0 right-0 h-[60%] bg-gradient-to-t from-black/70 via-black/30 to-transparent pointer-events-none z-20" />
+      <div className="absolute bottom-0 left-0 right-0 h-[40%] bg-gradient-to-t from-black/80 via-black/40 to-transparent pointer-events-none z-20" />
 
       {/* Shine sweep */}
       <motion.div
