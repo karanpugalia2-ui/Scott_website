@@ -93,277 +93,137 @@ function ArtistSlide({
 
 function Lightbox({
   project,
-  artistIndex,
-  totalArtists,
   onClose,
-  onPrevArtist,
-  onNextArtist,
 }: {
   project: ArtistProject;
-  artistIndex: number;
-  totalArtists: number;
   onClose: () => void;
-  onPrevArtist: () => void;
-  onNextArtist: () => void;
 }) {
-  const [currentMedia, setCurrentMedia] = useState(0);
-  const [direction, setDirection] = useState(0);
-  const touchStartX = useRef(0);
-  const navRef = useRef({ goNextMedia: () => {}, goPrevMedia: () => {} });
+  const [currentImage, setCurrentImage] = useState(0);
+  const [showVideo, setShowVideo] = useState(false);
 
-  const totalMedia = project.images.length + (project.video ? 1 : 0);
-  const isVideo = project.video && currentMedia === project.images.length;
-
-  const goNextMedia = () => {
-    if (currentMedia < totalMedia - 1) {
-      setDirection(1);
-      setCurrentMedia((p) => p + 1);
-    }
-  };
-  const goPrevMedia = () => {
-    if (currentMedia > 0) {
-      setDirection(-1);
-      setCurrentMedia((p) => p - 1);
-    }
-  };
-
-  navRef.current = { goNextMedia, goPrevMedia };
-
-  // Reset to first media when artist changes
-  useEffect(() => {
-    setCurrentMedia(0);
-    setDirection(0);
-  }, [project.id]);
-
-  // Disable page scroll
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, []);
-
-  // Keyboard — uses ref to avoid stale closures
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
-      if (e.key === "ArrowRight") navRef.current.goNextMedia();
-      if (e.key === "ArrowLeft") navRef.current.goPrevMedia();
+      if (e.key === "ArrowRight")
+        setCurrentImage((p) =>
+          p < project.images.length - 1 ? p + 1 : p
+        );
+      if (e.key === "ArrowLeft")
+        setCurrentImage((p) => (p > 0 ? p - 1 : p));
     };
     document.addEventListener("keydown", handleKey);
-    return () => document.removeEventListener("keydown", handleKey);
-  }, [onClose]);
-
-  // Swipe gestures
-  const onTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
-  };
-  const onTouchEnd = (e: React.TouchEvent) => {
-    const diff = touchStartX.current - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 50) {
-      if (diff > 0) goNextMedia();
-      else goPrevMedia();
-    }
-  };
-
-  // Preload adjacent images
-  useEffect(() => {
-    project.images.forEach((src, i) => {
-      if (Math.abs(i - currentMedia) <= 1) {
-        const img = new window.Image();
-        img.src = src;
-      }
-    });
-  }, [currentMedia, project.images]);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", handleKey);
+      document.body.style.overflow = "";
+    };
+  }, [onClose, project.images.length]);
 
   return (
     <motion.div
-      className="fixed inset-0 z-[300] bg-[#0a0a0a]/95 backdrop-blur-xl"
+      className="fixed inset-0 z-[300] bg-black/95 backdrop-blur-xl flex flex-col"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.3 }}
     >
-      {/* Top-left: Artist info */}
-      <div className="absolute top-0 left-0 z-50 px-5 sm:px-8 py-5">
-        <motion.div
-          key={project.id + "-cat"}
-          initial={{ opacity: 0, x: -10 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="text-[#c8ff00] text-[10px] tracking-[0.3em] uppercase font-medium mb-1"
+      {/* Header */}
+      <div className="flex items-center justify-between px-6 py-4 border-b border-white/5">
+        <div>
+          <h3 className="text-xl font-bold text-white">{project.artist}</h3>
+          <p className="text-sm text-[#666]">{project.tagline}</p>
+        </div>
+        <button
+          onClick={onClose}
+          className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-[#999] hover:text-white hover:border-white/30 transition-colors"
+          aria-label="Close"
         >
-          {project.type === "concert"
-            ? "Concert"
-            : project.type === "music-video"
-            ? "Music Video"
-            : project.type === "documentary"
-            ? "Documentary"
-            : "Event"}{" "}
-          — {project.year}
-        </motion.div>
-        <motion.h3
-          key={project.id + "-name"}
-          initial={{ opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.05 }}
-          className="text-xl sm:text-2xl font-bold text-white"
-        >
-          {project.artist}
-        </motion.h3>
+          <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" />
+          </svg>
+        </button>
       </div>
 
-      {/* Top-right: Close button */}
-      <button
-        onClick={onClose}
-        className="absolute top-5 right-5 sm:right-8 z-50 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/5 backdrop-blur-md border border-white/10 flex items-center justify-center text-[#999] hover:text-white hover:bg-white/10 hover:border-white/30 transition-all"
-        aria-label="Close"
-      >
-        <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" />
-        </svg>
-      </button>
-
-      {/* OUTER NAV — Previous artist */}
-      {artistIndex > 0 && (
-        <button
-          onClick={onPrevArtist}
-          className="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 z-50 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/5 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all"
-          aria-label="Previous artist"
-        >
-          <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </button>
-      )}
-
-      {/* OUTER NAV — Next artist */}
-      {artistIndex < totalArtists - 1 && (
-        <button
-          onClick={onNextArtist}
-          className="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 z-50 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/5 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all"
-          aria-label="Next artist"
-        >
-          <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </button>
-      )}
-
-      {/* Floating media window */}
-      <div
-        className="absolute inset-0 flex items-center justify-center z-10"
-        onTouchStart={onTouchStart}
-        onTouchEnd={onTouchEnd}
-      >
-        <motion.div
-          key={project.id}
-          initial={{ opacity: 0, scale: 0.97 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="relative w-[92vw] h-[82vh] sm:w-[80vw] sm:h-[82vh] max-w-[1200px] rounded-2xl overflow-hidden bg-black/30 border border-white/5"
-        >
-          {/* INNER NAV — Previous media */}
-          {currentMedia > 0 && (
-            <button
-              onClick={goPrevMedia}
-              className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/50 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:bg-black/70 transition-all"
-              aria-label="Previous photo"
+      {/* Content */}
+      <div className="flex-1 flex items-center justify-center p-6 overflow-hidden">
+        {showVideo && project.video ? (
+          <video
+            src={project.video}
+            controls
+            autoPlay
+            className="max-w-full max-h-full rounded-lg"
+          />
+        ) : (
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentImage}
+              className="relative w-full h-full max-w-5xl"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.3 }}
             >
-              <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
+              <img
+                src={project.images[currentImage]}
+                alt={`${project.artist} - Photo ${currentImage + 1}`}
+                className="w-full h-full object-contain"
+              />
+            </motion.div>
+          </AnimatePresence>
+        )}
+      </div>
+
+      {/* Bottom bar */}
+      <div className="px-6 py-4 border-t border-white/5 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          {project.video && (
+            <button
+              onClick={() => setShowVideo(!showVideo)}
+              className={`px-4 py-2 rounded-full text-xs tracking-wider uppercase transition-all ${
+                showVideo
+                  ? "bg-[#c8ff00] text-[#0a0a0a]"
+                  : "border border-white/10 text-[#999] hover:text-white hover:border-white/30"
+              }`}
+            >
+              {showVideo ? "Viewing Video" : "Play Video"}
             </button>
           )}
+        </div>
 
-          {/* INNER NAV — Next media */}
-          {currentMedia < totalMedia - 1 && (
-            <button
-              onClick={goNextMedia}
-              className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/50 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:bg-black/70 transition-all"
-              aria-label="Next photo"
-            >
-              <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
+        <div className="flex items-center gap-4">
+          {!showVideo && (
+            <>
+              <button
+                onClick={() => setCurrentImage((p) => (p > 0 ? p - 1 : p))}
+                disabled={currentImage === 0}
+                className="text-[#666] hover:text-white disabled:opacity-30 transition-colors"
+                aria-label="Previous image"
+              >
+                <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+              <span className="text-sm text-[#666] min-w-[4ch] text-center">
+                {currentImage + 1} / {project.images.length}
+              </span>
+              <button
+                onClick={() =>
+                  setCurrentImage((p) =>
+                    p < project.images.length - 1 ? p + 1 : p
+                  )
+                }
+                disabled={currentImage === project.images.length - 1}
+                className="text-[#666] hover:text-white disabled:opacity-30 transition-colors"
+                aria-label="Next image"
+              >
+                <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+            </>
           )}
+        </div>
 
-          {/* Media content */}
-          <div className="w-full h-full flex items-center justify-center p-4 sm:p-6">
-            <AnimatePresence mode="wait" custom={direction}>
-              {isVideo && project.video ? (
-                <motion.video
-                  key={project.id + "-video"}
-                  src={project.video}
-                  controls
-                  autoPlay
-                  className="max-w-full max-h-full rounded-lg"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                />
-              ) : (
-                <motion.img
-                  key={project.id + "-" + currentMedia}
-                  src={project.images[currentMedia]}
-                  alt={`${project.artist} - Photo ${currentMedia + 1}`}
-                  className="max-w-full max-h-full object-contain select-none"
-                  custom={direction}
-                  initial={{ opacity: 0, x: direction >= 0 ? 40 : -40 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: direction >= 0 ? -40 : 40 }}
-                  transition={{ duration: 0.25, ease: "easeOut" }}
-                  draggable={false}
-                />
-              )}
-            </AnimatePresence>
-          </div>
-
-          {/* Bottom counter bar — inside the floating window */}
-          <div className="absolute bottom-0 left-0 right-0 z-30 flex items-center justify-center pb-3">
-            <div className="flex items-center gap-3 px-4 py-2 rounded-full bg-black/60 backdrop-blur-md border border-white/10">
-              {project.video && (
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setCurrentMedia(isVideo ? 0 : project.images.length);
-                  }}
-                  className={`px-2.5 py-1 rounded-full text-[9px] tracking-wider uppercase transition-all ${
-                    isVideo ? "bg-[#c8ff00] text-[#0a0a0a]" : "text-[#999] hover:text-white"
-                  }`}
-                >
-                  {isVideo ? "Video" : "Video"}
-                </button>
-              )}
-              <span className="text-xs text-white/60 tabular-nums">
-                {currentMedia + 1} / {totalMedia}
-              </span>
-              {totalMedia <= 15 && (
-                <div className="hidden sm:flex items-center gap-1">
-                  {Array.from({ length: totalMedia }).map((_, i) => (
-                    <button
-                      key={i}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setDirection(i > currentMedia ? 1 : -1);
-                        setCurrentMedia(i);
-                      }}
-                      className={`rounded-full transition-all duration-300 ${
-                        i === currentMedia
-                          ? "bg-[#c8ff00] w-4 h-1.5"
-                          : "bg-white/20 hover:bg-white/40 w-1.5 h-1.5"
-                      }`}
-                      aria-label={`Go to media ${i + 1}`}
-                    />
-                  ))}
-                </div>
-              )}
-              <span className="text-[10px] text-white/25 tabular-nums">
-                {artistIndex + 1}/{totalArtists}
-              </span>
-            </div>
-          </div>
-        </motion.div>
+        <div className="w-[120px]" />
       </div>
     </motion.div>
   );
@@ -378,9 +238,6 @@ export default function Work() {
   const selectedProject = selectedProjectId
     ? artists.find((a) => a.id === selectedProjectId) ?? null
     : null;
-  const artistIndex = selectedProject
-    ? artists.findIndex((a) => a.id === selectedProject.id)
-    : -1;
 
   const openArtist = (project: ArtistProject) => {
     setSelectedProjectId(project.id);
@@ -388,18 +245,6 @@ export default function Work() {
 
   const closeLightbox = () => {
     setSelectedProjectId(null);
-  };
-
-  const prevArtist = () => {
-    if (artistIndex > 0) {
-      setSelectedProjectId(artists[artistIndex - 1].id);
-    }
-  };
-
-  const nextArtist = () => {
-    if (artistIndex < artists.length - 1) {
-      setSelectedProjectId(artists[artistIndex + 1].id);
-    }
   };
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -561,11 +406,7 @@ export default function Work() {
         {selectedProject && (
           <Lightbox
             project={selectedProject}
-            artistIndex={artistIndex}
-            totalArtists={artists.length}
             onClose={closeLightbox}
-            onPrevArtist={prevArtist}
-            onNextArtist={nextArtist}
           />
         )}
       </AnimatePresence>
