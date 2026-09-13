@@ -11,7 +11,6 @@ function ArtistSlide({
 }) {
   return (
     <motion.div
-      layout
       className="flex-shrink-0 w-[320px] md:w-[420px] lg:w-[500px] group relative"
       whileHover={{ y: -8 }}
       transition={{ duration: 0.4 }}

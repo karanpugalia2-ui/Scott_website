@@ -32,7 +32,7 @@ export default function Hero() {
           muted
           loop
           playsInline
-          preload="none"
+          preload="metadata"
           className="w-full h-full object-cover"
           poster="/work/chaar-diwari/1.jpg"
         />
@@ -105,15 +105,11 @@ export default function Hero() {
       </motion.div>
 
       {/* Floating elements */}
-      <motion.div
-        className="absolute top-32 right-12 w-32 h-32 border border-[#c8ff00]/20 rounded-full hidden lg:block z-10"
-        animate={{ y: [0, -20, 0] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+      <div
+        className="absolute top-32 right-12 w-32 h-32 border border-[#c8ff00]/20 rounded-full hidden lg:block z-10 animate-float"
       />
-      <motion.div
-        className="absolute top-1/2 right-1/4 w-4 h-4 bg-[#c8ff00]/30 rounded-full hidden lg:block z-10"
-        animate={{ y: [0, -15, 0], opacity: [0.3, 0.8, 0.3] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+      <div
+        className="absolute top-1/2 right-1/4 w-4 h-4 bg-[#c8ff00]/30 rounded-full hidden lg:block z-10 animate-float-pulse"
       />
 
       {/* Bottom line */}

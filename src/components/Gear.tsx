@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import Image from "next/image";
 
 const gearItems = [
@@ -91,7 +91,6 @@ function GearCard({
 }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(cardRef, { once: true, margin: "-60px" });
-  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <motion.div
@@ -103,15 +102,12 @@ function GearCard({
         delay: index * 0.08,
         ease: [0.25, 0.46, 0.45, 0.94],
       }}
-      className={`group relative rounded-2xl overflow-hidden cursor-pointer bg-[#0c0c0c] ${item.span} flex flex-col h-full`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      className={`gear-card group relative rounded-2xl overflow-hidden cursor-pointer bg-[#0c0c0c] ${item.span} flex flex-col h-full`}
+      style={{ "--accent": item.accent } as React.CSSProperties}
     >
-      {/* Glow border on hover */}
-      <motion.div
-        className="absolute inset-0 rounded-2xl pointer-events-none z-40"
-        animate={{ opacity: isHovered ? 1 : 0 }}
-        transition={{ type: "spring", stiffness: 100, damping: 20 }}
+      {/* Glow border on hover — CSS only */}
+      <div
+        className="absolute inset-0 rounded-2xl pointer-events-none z-40 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
         style={{
           boxShadow: `inset 0 0 0 1px ${item.accent}44, 0 0 30px ${item.accent}12`,
         }}
@@ -139,57 +135,31 @@ function GearCard({
         {String(index + 1).padStart(2, "0")}
       </div>
 
-      {/* Image area — shrinks and lifts up on hover */}
-      <motion.div
-        className="relative flex items-center justify-center overflow-hidden z-10 rounded-t-2xl"
-        animate={{
-          flex: isHovered ? "0 0 42%" : "1 1 100%",
-          paddingTop: isHovered ? "0.5rem" : "1.25rem",
-          paddingBottom: isHovered ? "0.25rem" : "1.25rem",
-        }}
-        transition={{ type: "spring", stiffness: 120, damping: 20 }}
-      >
-        <motion.div
-          className="relative w-full h-full flex items-center justify-center px-2 md:px-4"
-          animate={{
-            y: isHovered ? -4 : 0,
-            scale: isHovered ? 0.88 : 1,
-          }}
-          transition={{ type: "spring", stiffness: 120, damping: 20 }}
-        >
+      {/* Image area — CSS hover transition */}
+      <div className="gear-card-image relative flex items-center justify-center overflow-hidden z-10 rounded-t-2xl transition-all duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]">
+        <div className="relative w-full h-full flex items-center justify-center px-2 md:px-4 transition-transform duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:-translate-y-1 group-hover:scale-[0.88]">
           <Image
             src={item.image}
             alt={item.name}
             width={item.imageW}
             height={item.imageH}
-            className="w-full h-full object-contain"
+            className="w-full h-full object-contain transition-[filter] duration-500 ease-out group-hover:drop-shadow-[0_0_20px_var(--accent)]"
             style={{
-              filter: isHovered
-                ? `drop-shadow(0 0 20px ${item.accent}18) drop-shadow(0 10px 25px rgba(0,0,0,0.5))`
-                : "drop-shadow(0 8px 20px rgba(0,0,0,0.4))",
-              transition: "filter 0.5s ease",
+              filter: "drop-shadow(0 8px 20px rgba(0,0,0,0.4))",
             }}
           />
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
 
-      {/* Name — always visible, sits between image and details */}
+      {/* Name — always visible */}
       <div className="px-4 py-1.5 z-20 relative bg-[#0c0c0c]">
         <h3 className="text-[13px] md:text-[15px] font-bold text-white tracking-tight leading-tight">
           {item.name}
         </h3>
       </div>
 
-      {/* Details — slides up from below on hover, pushed to bottom */}
-      <motion.div
-        className="px-4 pb-3 z-20 relative bg-[#0c0c0c] overflow-hidden mt-auto"
-        initial={false}
-        animate={{
-          height: isHovered ? "auto" : 0,
-          opacity: isHovered ? 1 : 0,
-        }}
-        transition={{ type: "spring", stiffness: 100, damping: 18 }}
-      >
+      {/* Details — CSS height/opacity transition */}
+      <div className="gear-card-details px-4 pb-3 z-20 relative bg-[#0c0c0c] overflow-hidden mt-auto">
         <div className="border-t border-white/5 pt-2">
           <p
             className="text-[15px] md:text-[16px] italic mb-1 font-semibold"
@@ -202,34 +172,26 @@ function GearCard({
           </p>
           <div className="flex flex-wrap gap-1.5">
             {item.specs.map((spec, i) => (
-              <motion.span
+              <span
                 key={spec}
-                initial={false}
-                animate={
-                  isHovered
-                    ? { opacity: 1, scale: 1, y: 0 }
-                    : { opacity: 0, scale: 0.85, y: 4 }
-                }
-                transition={{ delay: isHovered ? i * 0.05 : 0, type: "spring", stiffness: 120, damping: 15 }}
-                className="px-2 py-0.5 rounded-full text-[10px] md:text-[11px] tracking-wider font-medium"
+                className="gear-spec px-2 py-0.5 rounded-full text-[10px] md:text-[11px] tracking-wider font-medium opacity-0 translate-y-1 scale-90 transition-all duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]"
                 style={{
                   color: `${item.accent}cc`,
                   background: `${item.accent}10`,
                   border: `1px solid ${item.accent}18`,
+                  transitionDelay: `${i * 50}ms`,
                 }}
               >
                 {spec}
-              </motion.span>
+              </span>
             ))}
           </div>
         </div>
-      </motion.div>
+      </div>
 
-      {/* Shine sweep */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none z-40"
-        animate={{ x: isHovered ? "200%" : "-100%" }}
-        transition={{ duration: 0.6, ease: "easeInOut" }}
+      {/* Shine sweep — CSS only */}
+      <div
+        className="absolute inset-0 pointer-events-none z-40 -translate-x-full group-hover:translate-x-[200%] transition-transform duration-600 ease-in-out"
         style={{
           background:
             "linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.04) 45%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 55%, transparent 60%)",

@@ -2,7 +2,6 @@
 
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import Image from "next/image";
 
 export default function About() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -65,12 +64,11 @@ export default function About() {
                 transition={{ duration: 0.5 }}
                 style={{ scale: imageScale }}
               >
-                <Image
+                <img
                   src="/scott.jpeg"
                   alt="Scott — Karan Pugalia"
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
-                  sizes="(max-width: 1024px) 100vw, 400px"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-2xl" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />

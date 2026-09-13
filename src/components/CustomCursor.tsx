@@ -8,28 +8,45 @@ export default function CustomCursor() {
   const [isHovering, setIsHovering] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
   const rafRef = useRef<number>(0);
+  const prefersReducedMotion = useRef(false);
 
   useEffect(() => {
     const cursor = cursorRef.current;
     const dot = cursorDotRef.current;
     if (!cursor || !dot) return;
 
+    prefersReducedMotion.current = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
     let mouseX = 0;
     let mouseY = 0;
     let cursorX = 0;
     let cursorY = 0;
+    let lastTime = 0;
+    const FPS = prefersReducedMotion.current ? 30 : 60;
+    const frameInterval = 1000 / FPS;
 
     const onMouseMove = (e: MouseEvent) => {
       mouseX = e.clientX;
       mouseY = e.clientY;
+      if (prefersReducedMotion.current) {
+        cursorX = mouseX;
+        cursorY = mouseY;
+      }
       dot.style.transform = `translate(${mouseX - 4}px, ${mouseY - 4}px)`;
     };
 
-    const animate = () => {
-      cursorX += (mouseX - cursorX) * 0.85;
-      cursorY += (mouseY - cursorY) * 0.85;
-      cursor.style.transform = `translate(${cursorX - 20}px, ${cursorY - 20}px)`;
+    const animate = (timestamp: number) => {
       rafRef.current = requestAnimationFrame(animate);
+      const delta = timestamp - lastTime;
+      if (delta < frameInterval) return;
+      lastTime = timestamp - (delta % frameInterval);
+
+      const lerp = prefersReducedMotion.current ? 0.5 : 0.85;
+      cursorX += (mouseX - cursorX) * lerp;
+      cursorY += (mouseY - cursorY) * lerp;
+      cursor.style.transform = `translate(${cursorX - 20}px, ${cursorY - 20}px)`;
     };
 
     const onMouseOver = (e: MouseEvent) => {
@@ -53,11 +70,21 @@ export default function CustomCursor() {
     const onMouseLeave = () => setIsHidden(true);
     const onMouseEnter = () => setIsHidden(false);
 
+    // Pause when tab not visible
+    const onVisibilityChange = () => {
+      if (document.hidden) {
+        cancelAnimationFrame(rafRef.current);
+      } else {
+        rafRef.current = requestAnimationFrame(animate);
+      }
+    };
+
     document.addEventListener("mousemove", onMouseMove, { passive: true });
     document.addEventListener("mouseover", onMouseOver, { passive: true });
     document.addEventListener("mouseout", onMouseOut, { passive: true });
     document.addEventListener("mouseleave", onMouseLeave);
     document.addEventListener("mouseenter", onMouseEnter);
+    document.addEventListener("visibilitychange", onVisibilityChange);
     rafRef.current = requestAnimationFrame(animate);
 
     return () => {
@@ -66,6 +93,7 @@ export default function CustomCursor() {
       document.removeEventListener("mouseout", onMouseOut);
       document.removeEventListener("mouseleave", onMouseLeave);
       document.removeEventListener("mouseenter", onMouseEnter);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
       cancelAnimationFrame(rafRef.current);
     };
   }, []);
