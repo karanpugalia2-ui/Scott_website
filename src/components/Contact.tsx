@@ -37,7 +37,7 @@ export default function Contact() {
     >
       {/* Background glow */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[#c8ff00]/[0.03] rounded-full blur-[120px]" />
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[#c8ff00]/[0.04] rounded-full" />
       </div>
 
       <div className="max-w-4xl mx-auto text-center relative z-10">
