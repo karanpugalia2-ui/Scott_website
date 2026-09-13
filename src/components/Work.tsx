@@ -191,7 +191,7 @@ export default function Work() {
               key={project.id}
               className="flex-shrink-0 w-[200px] md:w-[260px] group"
             >
-              <div className="relative aspect-[3/4] overflow-hidden rounded-lg mb-3 ring-1 ring-white/5 group-hover:ring-[#c8ff00]/30 transition-all duration-300">
+              <div className="relative aspect-[3/4] overflow-hidden rounded-lg mb-3 ring-1 ring-white/5 group-hover:ring-[#c8ff00]/30 transition-all duration-300 group-hover:shadow-[0_0_20px_rgba(200,255,0,0.15)]">
                 <img
                   src={project.cover}
                   alt={project.artist}
