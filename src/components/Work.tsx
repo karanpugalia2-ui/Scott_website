@@ -60,15 +60,6 @@ function ArtistSlide({
           <p className="text-[#999] text-sm leading-relaxed line-clamp-2">
             {project.tagline}
           </p>
-          <div className="flex items-center gap-2 mt-3 text-xs text-[#666]">
-            <span>{project.images.length} photos</span>
-            {project.video && (
-              <>
-                <span>•</span>
-                <span className="text-[#c8ff00]">+ Video</span>
-              </>
-            )}
-          </div>
         </div>
       </div>
     </motion.div>
@@ -219,10 +210,6 @@ export default function Work() {
                   <h4 className="text-sm font-bold text-white">
                     {project.artist}
                   </h4>
-                  <p className="text-[10px] text-[#666] mt-0.5">
-                    {project.images.length} photos
-                    {project.video ? " • Video" : ""}
-                  </p>
                 </div>
               </div>
             </div>
