@@ -2,6 +2,7 @@
 
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState, useEffect, useCallback } from "react";
+import Image from "next/image";
 import { artists, type ArtistProject } from "@/lib/data";
 
 function ArtistSlide({
@@ -121,7 +122,7 @@ function Lightbox({
 
   return (
     <motion.div
-      className="fixed inset-0 z-[300] bg-black/95 backdrop-blur-xl flex flex-col"
+      className="fixed inset-0 z-[200] bg-black/95 backdrop-blur-xl flex flex-col"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -162,10 +163,12 @@ function Lightbox({
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.3 }}
             >
-              <img
+              <Image
                 src={project.images[currentImage]}
                 alt={`${project.artist} - Photo ${currentImage + 1}`}
-                className="w-full h-full object-contain"
+                fill
+                className="object-contain"
+                sizes="100vw"
               />
             </motion.div>
           </AnimatePresence>
@@ -191,39 +194,37 @@ function Lightbox({
 
         <div className="flex items-center gap-4">
           {!showVideo && (
-            <>
-              <button
-                onClick={() => setCurrentImage((p) => (p > 0 ? p - 1 : p))}
-                disabled={currentImage === 0}
-                className="text-[#666] hover:text-white disabled:opacity-30 transition-colors"
-                aria-label="Previous image"
-              >
-                <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </button>
-              <span className="text-sm text-[#666] min-w-[4ch] text-center">
-                {currentImage + 1} / {project.images.length}
-              </span>
-              <button
-                onClick={() =>
-                  setCurrentImage((p) =>
-                    p < project.images.length - 1 ? p + 1 : p
-                  )
-                }
-                disabled={currentImage === project.images.length - 1}
-                className="text-[#666] hover:text-white disabled:opacity-30 transition-colors"
-                aria-label="Next image"
-              >
-                <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </button>
-            </>
+            <span className="text-sm text-[#666]">
+              {currentImage + 1} / {project.images.length}
+            </span>
           )}
+          <div className="flex gap-2">
+            <button
+              onClick={() => setCurrentImage((p) => (p > 0 ? p - 1 : p))}
+              className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-[#999] hover:text-white hover:border-white/30 transition-colors disabled:opacity-30"
+              disabled={showVideo || currentImage === 0}
+            >
+              <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+            <button
+              onClick={() =>
+                setCurrentImage((p) =>
+                  p < project.images.length - 1 ? p + 1 : p
+                )
+              }
+              className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-[#999] hover:text-white hover:border-white/30 transition-colors disabled:opacity-30"
+              disabled={
+                showVideo || currentImage === project.images.length - 1
+              }
+            >
+              <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+          </div>
         </div>
-
-        <div className="w-[120px]" />
       </div>
     </motion.div>
   );
