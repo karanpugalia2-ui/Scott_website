@@ -15,22 +15,22 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SCOTT — Photography & Videography",
+  title: "SCOTT — Photography & Cinematography",
   description:
-    "Portfolio of Scott (Karan Pugalia) — Photographer & Videographer from Daman, India. Specializing in concert photography, music videos, and event coverage.",
+    "Portfolio of Scott (Karan Pugalia) — Photographer & Cinematographer from Vadodara, India. Specializing in concert photography, music videos, and event coverage.",
   keywords: [
     "Scott",
     "Karan Pugalia",
     "photographer",
-    "videographer",
+    "cinematographer",
     "concert photography",
-    "Daman",
+    "Vadodara",
     "India",
     "music videos",
     "event coverage",
   ],
   openGraph: {
-    title: "SCOTT — Photography & Videography",
+    title: "SCOTT — Photography & Cinematography",
     description: "Capturing raw emotions through the lens.",
     type: "website",
     images: ["/scott.jpeg"],

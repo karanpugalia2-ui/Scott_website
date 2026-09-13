@@ -175,7 +175,7 @@ function GearCard({
 
       {/* Name — always visible, sits between image and details */}
       <div className="px-4 py-1.5 z-20 relative bg-[#0c0c0c]">
-        <h3 className="text-xs md:text-sm font-bold text-white tracking-tight">
+        <h3 className="text-[13px] md:text-[15px] font-bold text-white tracking-tight leading-tight">
           {item.name}
         </h3>
       </div>
@@ -192,12 +192,12 @@ function GearCard({
       >
         <div className="border-t border-white/5 pt-2">
           <p
-            className="text-[9px] md:text-[10px] italic mb-1 font-medium"
+            className="text-[10px] md:text-[11px] italic mb-1 font-semibold"
             style={{ color: item.accent }}
           >
             {item.tagline}
           </p>
-          <p className="text-[9px] md:text-[10px] text-[#888] leading-relaxed mb-2 line-clamp-2">
+          <p className="text-[10px] md:text-[11px] text-[#999] leading-snug mb-2 line-clamp-2">
             {item.description}
           </p>
           <div className="flex flex-wrap gap-1">

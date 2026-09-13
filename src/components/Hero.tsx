@@ -86,7 +86,7 @@ export default function Hero() {
             transition={{ duration: 0.8, delay: 1.4 }}
           >
             Capturing raw emotions through the lens — from electrifying concerts
-            to intimate portraits. Based in Daman, creating across India.
+            to intimate portraits. Based in Vadodara, creating across India.
           </motion.p>
 
           <motion.div

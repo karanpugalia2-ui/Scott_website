@@ -87,7 +87,7 @@ export default function About() {
                   Scott<span className="text-[#c8ff00]">.</span>
                 </h3>
                 <p className="text-sm text-[#666] mt-1">
-                  Karan Pugalia — Daman, India
+                  Karan Pugalia — Vadodara, India
                 </p>
               </motion.div>
             </div>
@@ -111,7 +111,7 @@ export default function About() {
                 <span className="text-[#ededed] font-medium">Class 9</span>{" "}
                 with nothing more than a{" "}
                 <span className="text-[#c8ff00]">mobile phone</span> —
-                photographing the streets of Daman and learning composition,
+                photographing the streets of Vadodara and learning composition,
                 light, and storytelling.
               </motion.p>
 

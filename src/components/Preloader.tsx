@@ -84,7 +84,7 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
             transition={{ delay: 0.6 }}
           >
             <span>Photography & Videography</span>
-            <span>Daman, India</span>
+            <span>Vadodara, India</span>
           </motion.div>
         </motion.div>
       )}

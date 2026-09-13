@@ -22,7 +22,6 @@ export default function Navbar() {
         className="fixed top-0 left-0 right-0 z-[100] px-6 md:px-12 py-5 flex items-center justify-between"
         style={{
           backgroundColor: `rgba(10, 10, 10, ${bgOpacity.get()})`,
-          backdropFilter: "blur(20px)",
         }}
       >
         <motion.div
