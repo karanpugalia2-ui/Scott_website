@@ -180,9 +180,9 @@ function GearCard({
         </h3>
       </div>
 
-      {/* Details — slides up from below on hover, no overlap */}
+      {/* Details — slides up from below on hover, pushed to bottom */}
       <motion.div
-        className="px-4 pb-3 z-20 relative bg-[#0c0c0c] overflow-hidden"
+        className="px-4 pb-3 z-20 relative bg-[#0c0c0c] overflow-hidden mt-auto"
         initial={false}
         animate={{
           height: isHovered ? "auto" : 0,
@@ -192,15 +192,15 @@ function GearCard({
       >
         <div className="border-t border-white/5 pt-2">
           <p
-            className="text-[10px] md:text-[11px] italic mb-1 font-semibold"
+            className="text-[15px] md:text-[16px] italic mb-1 font-semibold"
             style={{ color: item.accent }}
           >
             {item.tagline}
           </p>
-          <p className="text-[10px] md:text-[11px] text-[#999] leading-snug mb-2 line-clamp-2">
+          <p className="text-[15px] md:text-[16px] text-[#999] leading-snug mb-2 line-clamp-2">
             {item.description}
           </p>
-          <div className="flex flex-wrap gap-1">
+          <div className="flex flex-wrap gap-1.5">
             {item.specs.map((spec, i) => (
               <motion.span
                 key={spec}
@@ -211,7 +211,7 @@ function GearCard({
                     : { opacity: 0, scale: 0.85, y: 4 }
                 }
                 transition={{ delay: isHovered ? i * 0.04 : 0, duration: 0.2 }}
-                className="px-1.5 py-px rounded-full text-[7px] md:text-[8px] tracking-wider font-medium"
+                className="px-2 py-0.5 rounded-full text-[10px] md:text-[11px] tracking-wider font-medium"
                 style={{
                   color: `${item.accent}cc`,
                   background: `${item.accent}10`,
