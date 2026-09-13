@@ -160,7 +160,7 @@ body {
 .gear-grid-left {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 180px 180px;
+  grid-template-rows: 234px 234px;
   gap: 12px;
 }
 
@@ -176,7 +176,7 @@ body {
 
   .gear-grid-left {
     flex: 1;
-    grid-template-rows: 240px 240px;
+    grid-template-rows: 312px 312px;
   }
 
   .gear-grid-right {
