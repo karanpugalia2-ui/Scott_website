@@ -101,15 +101,19 @@ function Lightbox({
   const [currentImage, setCurrentImage] = useState(0);
   const [showVideo, setShowVideo] = useState(false);
 
+  const goNext = () => {
+    if (currentImage < project.images.length - 1)
+      setCurrentImage((p) => p + 1);
+  };
+  const goPrev = () => {
+    if (currentImage > 0) setCurrentImage((p) => p - 1);
+  };
+
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
-      if (e.key === "ArrowRight")
-        setCurrentImage((p) =>
-          p < project.images.length - 1 ? p + 1 : p
-        );
-      if (e.key === "ArrowLeft")
-        setCurrentImage((p) => (p > 0 ? p - 1 : p));
+      if (e.key === "ArrowRight") goNext();
+      if (e.key === "ArrowLeft") goPrev();
     };
     document.addEventListener("keydown", handleKey);
     document.body.style.overflow = "hidden";
@@ -117,34 +121,95 @@ function Lightbox({
       document.removeEventListener("keydown", handleKey);
       document.body.style.overflow = "";
     };
-  }, [onClose, project.images.length]);
+  }, [onClose, currentImage, project.images.length]);
 
   return (
     <motion.div
-      className="fixed inset-0 z-[200] bg-black/95 backdrop-blur-xl flex flex-col"
+      className="fixed inset-0 z-[200] bg-[#0a0a0a] flex flex-col"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
     >
-      {/* Header */}
-      <div className="flex items-center justify-between px-6 py-4 border-b border-white/5">
-        <div>
-          <h3 className="text-xl font-bold text-white">{project.artist}</h3>
-          <p className="text-sm text-[#666]">{project.tagline}</p>
+      {/* Top bar — fixed */}
+      <div className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 shrink-0">
+        <div className="min-w-0">
+          <h3 className="text-lg sm:text-xl font-bold text-white truncate">
+            {project.artist}
+          </h3>
+          <p className="text-xs sm:text-sm text-[#666] truncate">
+            {project.tagline}
+          </p>
         </div>
         <button
           onClick={onClose}
-          className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-[#999] hover:text-white hover:border-white/30 transition-colors"
+          className="ml-4 w-10 h-10 sm:w-11 sm:h-11 rounded-full border border-white/10 flex items-center justify-center text-[#999] hover:text-white hover:border-white/30 transition-colors shrink-0"
           aria-label="Close"
         >
-          <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" />
+          <svg
+            viewBox="0 0 24 24"
+            className="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <path
+              d="M18 6L6 18M6 6l12 12"
+              strokeLinecap="round"
+            />
           </svg>
         </button>
       </div>
 
-      {/* Content */}
-      <div className="flex-1 flex items-center justify-center p-6 overflow-hidden">
+      {/* Image area — fills remaining space */}
+      <div className="flex-1 relative flex items-center justify-center px-4 sm:px-16 py-4 min-h-0">
+        {/* Prev button */}
+        {currentImage > 0 && !showVideo && (
+          <button
+            onClick={goPrev}
+            className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/5 backdrop-blur-md border border-white/10 flex items-center justify-center text-white hover:bg-white/10 hover:border-white/30 transition-all"
+            aria-label="Previous"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path
+                d="M15 18l-6-6 6-6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
+        )}
+
+        {/* Next button */}
+        {currentImage < project.images.length - 1 && !showVideo && (
+          <button
+            onClick={goNext}
+            className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/5 backdrop-blur-md border border-white/10 flex items-center justify-center text-white hover:bg-white/10 hover:border-white/30 transition-all"
+            aria-label="Next"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path
+                d="M9 18l6-6-6-6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
+        )}
+
+        {/* Image */}
         {showVideo && project.video ? (
           <video
             src={project.video}
@@ -154,28 +219,25 @@ function Lightbox({
           />
         ) : (
           <AnimatePresence mode="wait">
-            <motion.div
+            <motion.img
               key={currentImage}
-              className="flex items-center justify-center w-full h-full"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.3 }}
-            >
-              <img
-                src={project.images[currentImage]}
-                alt={`${project.artist} - Photo ${currentImage + 1}`}
-                className="max-w-full max-h-full object-contain rounded-lg"
-                loading="eager"
-              />
-            </motion.div>
+              src={project.images[currentImage]}
+              alt={`${project.artist} - Photo ${currentImage + 1}`}
+              className="max-w-full max-h-full object-contain select-none"
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -30 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
+              draggable={false}
+            />
           </AnimatePresence>
         )}
       </div>
 
-      {/* Bottom bar */}
-      <div className="px-6 py-4 border-t border-white/5 flex items-center justify-between">
-        <div className="flex items-center gap-3">
+      {/* Bottom bar — fixed */}
+      <div className="px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between shrink-0 border-t border-white/5">
+        {/* Video toggle */}
+        <div>
           {project.video && (
             <button
               onClick={() => setShowVideo(!showVideo)}
@@ -190,39 +252,35 @@ function Lightbox({
           )}
         </div>
 
-        <div className="flex items-center gap-4">
-          {!showVideo && (
-            <span className="text-sm text-[#666]">
+        {/* Counter */}
+        {!showVideo && (
+          <div className="flex items-center gap-3">
+            <span className="text-sm text-[#666] tabular-nums">
               {currentImage + 1} / {project.images.length}
             </span>
-          )}
-          <div className="flex gap-2">
-            <button
-              onClick={() => setCurrentImage((p) => (p > 0 ? p - 1 : p))}
-              className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-[#999] hover:text-white hover:border-white/30 transition-colors disabled:opacity-30"
-              disabled={showVideo || currentImage === 0}
-            >
-              <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
-            <button
-              onClick={() =>
-                setCurrentImage((p) =>
-                  p < project.images.length - 1 ? p + 1 : p
-                )
-              }
-              className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-[#999] hover:text-white hover:border-white/30 transition-colors disabled:opacity-30"
-              disabled={
-                showVideo || currentImage === project.images.length - 1
-              }
-            >
-              <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
           </div>
-        </div>
+        )}
+
+        {/* Progress dots */}
+        {!showVideo && project.images.length <= 12 && (
+          <div className="hidden sm:flex items-center gap-1.5">
+            {project.images.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setCurrentImage(i)}
+                className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+                  i === currentImage
+                    ? "bg-[#c8ff00] w-4"
+                    : "bg-white/20 hover:bg-white/40"
+                }`}
+                aria-label={`Go to image ${i + 1}`}
+              />
+            ))}
+          </div>
+        )}
+
+        {/* Spacer for balance */}
+        <div className="w-20" />
       </div>
     </motion.div>
   );
