@@ -44,7 +44,7 @@ export const artists: ArtistProject[] = [
   {
     id: "sunidhi-chauhan",
     artist: "Sunidhi Chauhan",
-    tagline: "Waves — Vadodara 2025",
+    tagline: "Vadodara 2025",
     type: "concert",
     cover: "/work/sunidhi-chauhan/1.jpg",
     images: [
