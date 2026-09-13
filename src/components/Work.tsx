@@ -33,14 +33,7 @@ function ArtistSlide({
           </div>
         )}
 
-        {/* Play icon for video projects */}
-        {project.video && (
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 scale-75 group-hover:scale-100">
-            <svg viewBox="0 0 24 24" fill="white" className="w-6 h-6 ml-1">
-              <polygon points="5,3 19,12 5,21" />
-            </svg>
-          </div>
-        )}
+
 
         {/* Content */}
         <div className="absolute bottom-0 left-0 right-0 p-6">
