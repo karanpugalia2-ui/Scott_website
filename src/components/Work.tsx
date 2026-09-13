@@ -116,16 +116,14 @@ function Lightbox({
       if (e.key === "ArrowLeft") goPrev();
     };
     document.addEventListener("keydown", handleKey);
-    document.body.style.overflow = "hidden";
     return () => {
       document.removeEventListener("keydown", handleKey);
-      document.body.style.overflow = "";
     };
   }, [onClose, currentImage, project.images.length]);
 
   return (
     <motion.div
-      className="fixed inset-0 z-[200] bg-[#0a0a0a] flex flex-col"
+      className="fixed inset-0 z-[200] bg-[#0a0a0a] flex flex-col h-[100dvh]"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -162,7 +160,7 @@ function Lightbox({
       </div>
 
       {/* Image area — fills remaining space */}
-      <div className="flex-1 relative flex items-center justify-center px-4 sm:px-16 py-4 min-h-0">
+      <div className="flex-1 relative flex items-center justify-center px-4 sm:px-16 py-2 min-h-0 overflow-hidden">
         {/* Prev button */}
         {currentImage > 0 && !showVideo && (
           <button
