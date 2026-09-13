@@ -144,13 +144,13 @@ function GearCard({
         className="relative flex items-center justify-center overflow-hidden z-10 rounded-t-2xl"
         animate={{
           flex: isHovered ? "0 0 42%" : "1 1 100%",
-          paddingTop: isHovered ? "0.75rem" : "2rem",
-          paddingBottom: isHovered ? "0.25rem" : "2rem",
+          paddingTop: isHovered ? "0.5rem" : "1.25rem",
+          paddingBottom: isHovered ? "0.25rem" : "1.25rem",
         }}
         transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
       >
         <motion.div
-          className="relative w-full h-full flex items-center justify-center px-4 md:px-6"
+          className="relative w-full h-full flex items-center justify-center px-2 md:px-4"
           animate={{
             y: isHovered ? -4 : 0,
             scale: isHovered ? 0.88 : 1,
