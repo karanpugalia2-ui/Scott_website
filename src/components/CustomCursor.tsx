@@ -26,8 +26,8 @@ export default function CustomCursor() {
     };
 
     const animate = () => {
-      cursorX += (mouseX - cursorX) * 0.75;
-      cursorY += (mouseY - cursorY) * 0.75;
+      cursorX += (mouseX - cursorX) * 0.85;
+      cursorY += (mouseY - cursorY) * 0.85;
       cursor.style.transform = `translate(${cursorX - 20}px, ${cursorY - 20}px)`;
       rafRef.current = requestAnimationFrame(animate);
     };
