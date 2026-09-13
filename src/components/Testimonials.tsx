@@ -26,10 +26,9 @@ const testimonials = [
 
 export default function Testimonials() {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section ref={ref} className="py-24 md:py-32 px-6 md:px-12 bg-[#0d0d0d] relative overflow-hidden" style={{ contentVisibility: "auto" as const, containIntrinsicSize: "0 800px" }}>
+    <section ref={ref} className="py-24 md:py-32 px-6 md:px-12 bg-[#0d0d0d] relative overflow-hidden">
       {/* Background Seedhe Maut photo */}
       <div
         className="absolute inset-0 pointer-events-none bg-cover bg-center opacity-70"
@@ -39,8 +38,9 @@ export default function Testimonials() {
       <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="mb-16"
         >
           <div className="flex items-center gap-4 mb-4">
@@ -59,8 +59,13 @@ export default function Testimonials() {
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 40 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.7, delay: 0.2 + i * 0.15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{
+                duration: 0.7,
+                delay: 0.1 + i * 0.15,
+                ease: [0.25, 0.46, 0.45, 0.94],
+              }}
               className="p-8 rounded-xl bg-[#141414]/80 border border-white/5 hover:border-[#c8ff00]/20 transition-all duration-500 relative group backdrop-blur-sm"
             >
               <div className="text-[#c8ff00] text-6xl font-serif absolute top-4 right-6 opacity-20 group-hover:opacity-40 transition-opacity">

@@ -18,9 +18,9 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
           }, 400);
           return 100;
         }
-        return prev + Math.floor(Math.random() * 6) + 2;
+        return prev + Math.floor(Math.random() * 8) + 3;
       });
-    }, 35);
+    }, 50);
 
     return () => clearInterval(interval);
   }, [onComplete]);

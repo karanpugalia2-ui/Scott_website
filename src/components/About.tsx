@@ -5,7 +5,6 @@ import { useRef } from "react";
 
 export default function About() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"],
@@ -19,7 +18,6 @@ export default function About() {
       id="about"
       ref={sectionRef}
       className="py-24 md:py-32 px-6 md:px-12 relative"
-      style={{ contentVisibility: "auto" as const, containIntrinsicSize: "0 1200px" }}
     >
       {/* Subtle background accent */}
       <motion.div
@@ -31,8 +29,9 @@ export default function About() {
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="mb-16"
         >
           <div className="flex items-center gap-4 mb-4">
@@ -53,8 +52,9 @@ export default function About() {
           {/* Photo — takes 2 cols */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.9, delay: 0.2 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.9, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
             className="lg:col-span-2"
           >
             <div className="sticky top-32">
@@ -77,8 +77,9 @@ export default function About() {
               {/* Name under photo */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: 0.5 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.4, duration: 0.6 }}
                 className="mt-6"
               >
                 <h3 className="text-2xl font-bold text-[#ededed]">
@@ -94,71 +95,45 @@ export default function About() {
           {/* Story text — takes 3 cols */}
           <motion.div
             initial={{ opacity: 0, x: 40 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.9, delay: 0.3 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.9, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
             className="lg:col-span-3"
           >
             <div className="space-y-8 text-lg md:text-xl leading-relaxed">
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: 0.4 }}
-                className="text-[#ccc]"
-              >
-                My journey began in{" "}
-                <span className="text-[#ededed] font-medium">Class 9</span>{" "}
-                with nothing more than a{" "}
-                <span className="text-[#c8ff00]">mobile phone</span> —
-                photographing the streets of Vadodara and learning composition,
-                light, and storytelling.
-              </motion.p>
-
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: 0.5 }}
-                className="text-[#999]"
-              >
-                This passion evolved into work with cafés and local businesses,
-                and before completing Class 12, I joined film school — where I
-                discovered my strongest interest in{" "}
-                <em className="text-[#c8ff00] not-italic font-medium">
-                  concerts, live events, and artists
-                </em>
-                .
-              </motion.p>
-
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: 0.6 }}
-                className="text-[#999]"
-              >
-                Over 4–5 years of consistent work, I kept investing in my craft
-                and saving from my own earnings — eventually purchasing my first
-                professional camera entirely through my own work.
-              </motion.p>
-
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: 0.7 }}
-                className="text-[#ccc] text-xl md:text-2xl font-medium leading-relaxed"
-              >
-                From a mobile phone to professional cinema equipment — driven by
-                one thing:{" "}
-                <em className="text-[#c8ff00] not-italic">
-                  the desire to create
-                </em>
-                .
-              </motion.p>
+              {[
+                { delay: 0.4, color: "text-[#ccc]", children: (
+                  <>My journey began in <span className="text-[#ededed] font-medium">Class 9</span> with nothing more than a <span className="text-[#c8ff00]">mobile phone</span> — photographing the streets of Vadodara and learning composition, light, and storytelling.</>
+                )},
+                { delay: 0.5, color: "text-[#999]", children: (
+                  <>This passion evolved into work with cafés and local businesses, and before completing Class 12, I joined film school — where I discovered my strongest interest in <em className="text-[#c8ff00] not-italic font-medium">concerts, live events, and artists</em>.</>
+                )},
+                { delay: 0.6, color: "text-[#999]", children: (
+                  <>Over 4–5 years of consistent work, I kept investing in my craft and saving from my own earnings — eventually purchasing my first professional camera entirely through my own work.</>
+                )},
+                { delay: 0.7, color: "text-[#ccc] text-xl md:text-2xl font-medium leading-relaxed", children: (
+                  <>From a mobile phone to professional cinema equipment — driven by one thing: <em className="text-[#c8ff00] not-italic">the desire to create</em>.</>
+                )},
+              ].map((p, i) => (
+                <motion.p
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: p.delay, duration: 0.6 }}
+                  className={p.color}
+                >
+                  {p.children}
+                </motion.p>
+              ))}
             </div>
 
             {/* CTA */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 1 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.8, duration: 0.6 }}
               className="mt-14"
             >
               <a

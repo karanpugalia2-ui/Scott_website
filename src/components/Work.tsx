@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 import { useRef, useState, useEffect, useCallback } from "react";
 import { artists, type ArtistProject } from "@/lib/data";
 
@@ -13,11 +13,9 @@ function ArtistSlide({
     <motion.div
       className="flex-shrink-0 w-[320px] md:w-[420px] lg:w-[500px] group relative"
       whileHover={{ y: -8 }}
-      transition={{ duration: 0.4 }}
+      transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
     >
-      <div
-        className="relative aspect-[3/4] overflow-hidden rounded-xl ring-1 ring-white/5 transition-all duration-500"
-      >
+      <div className="relative aspect-[3/4] overflow-hidden rounded-xl ring-1 ring-white/5 transition-all duration-500">
         <img
           src={project.cover}
           alt={project.artist}
@@ -38,11 +36,7 @@ function ArtistSlide({
         {/* Play icon for video projects */}
         {project.video && (
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 scale-75 group-hover:scale-100">
-            <svg
-              viewBox="0 0 24 24"
-              fill="white"
-              className="w-6 h-6 ml-1"
-            >
+            <svg viewBox="0 0 24 24" fill="white" className="w-6 h-6 ml-1">
               <polygon points="5,3 19,12 5,21" />
             </svg>
           </div>
@@ -84,7 +78,6 @@ function ArtistSlide({
 export default function Work() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
@@ -114,12 +107,13 @@ export default function Work() {
   const allProjects = artists;
 
   return (
-    <section id="work" ref={sectionRef} className="py-24 md:py-32 relative" style={{ contentVisibility: "auto" as const, containIntrinsicSize: "0 2000px" }}>
+    <section id="work" ref={sectionRef} className="py-24 md:py-32 relative">
       <div className="px-6 md:px-12 mb-12">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="flex flex-col md:flex-row md:items-end md:justify-between gap-6"
         >
           <div>
@@ -163,8 +157,9 @@ export default function Work() {
       {/* Featured carousel */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
-        animate={isInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.8, delay: 0.2 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
         className="mb-16"
       >
         <div className="px-6 md:px-12 mb-6">
@@ -182,10 +177,7 @@ export default function Work() {
           }}
         >
           {featuredProjects.map((project) => (
-            <ArtistSlide
-              key={project.id}
-              project={project}
-            />
+            <ArtistSlide key={project.id} project={project} />
           ))}
         </div>
       </motion.div>
@@ -193,8 +185,9 @@ export default function Work() {
       {/* All artists grid — horizontal scroll */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
-        animate={isInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.8, delay: 0.4 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
       >
         <div className="px-6 md:px-12 mb-6">
           <span className="text-xs tracking-[0.3em] uppercase text-[#666]">
@@ -214,7 +207,7 @@ export default function Work() {
               key={project.id}
               className="flex-shrink-0 w-[200px] md:w-[260px] group"
             >
-              <div className="relative aspect-[3/4] overflow-lg rounded-lg mb-3 ring-1 ring-white/5 group-hover:ring-[#c8ff00]/30 transition-all duration-300">
+              <div className="relative aspect-[3/4] overflow-hidden rounded-lg mb-3 ring-1 ring-white/5 group-hover:ring-[#c8ff00]/30 transition-all duration-300">
                 <img
                   src={project.cover}
                   alt={project.artist}

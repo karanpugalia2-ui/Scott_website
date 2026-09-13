@@ -204,7 +204,6 @@ function GearCard({
 
 export default function Gear() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"],
@@ -217,7 +216,6 @@ export default function Gear() {
       id="gear"
       ref={sectionRef}
       className="py-24 md:py-32 relative"
-      style={{ contentVisibility: "auto" as const, containIntrinsicSize: "0 1800px" }}
     >
       {/* Background radial glow */}
       <div className="absolute inset-0 pointer-events-none">
@@ -241,8 +239,9 @@ export default function Gear() {
       <div className="px-6 md:px-12 mb-12 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
           <div className="flex items-center gap-4 mb-4">
             <div className="w-8 h-[1px] bg-[#c8ff00]" />
@@ -280,8 +279,9 @@ export default function Gear() {
       <motion.div
         className="mt-12 mx-6 md:mx-12 h-[1px] bg-white/5"
         initial={{ scaleX: 0 }}
-        animate={isInView ? { scaleX: 1 } : {}}
-        transition={{ duration: 1.2, delay: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+        whileInView={{ scaleX: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1.2, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
         style={{ transformOrigin: "left" }}
       />
     </section>
