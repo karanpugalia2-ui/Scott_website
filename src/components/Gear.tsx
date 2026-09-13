@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 
 const gearItems = [
@@ -89,28 +89,13 @@ function GearCard({
   item: (typeof gearItems)[0];
   index: number;
 }) {
-  const cardRef = useRef<HTMLAnchorElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(cardRef, { once: true, margin: "-60px" });
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
 
-  const handleMouseMove = useCallback(
-    (e: React.MouseEvent) => {
-      if (!cardRef.current) return;
-      const rect = cardRef.current.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width - 0.5;
-      const y = (e.clientY - rect.top) / rect.height - 0.5;
-      setMousePos({ x, y });
-    },
-    []
-  );
-
   return (
-    <motion.a
+    <motion.div
       ref={cardRef}
-      href={item.link}
-      target="_blank"
-      rel="noopener noreferrer"
       initial={{ opacity: 0, y: 60, scale: 0.96 }}
       animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
       transition={{
@@ -118,34 +103,10 @@ function GearCard({
         delay: index * 0.08,
         ease: [0.25, 0.46, 0.45, 0.94],
       }}
-      className={`group relative rounded-2xl overflow-hidden cursor-pointer bg-[#0c0c0c] ${item.span} block h-full`}
-      onMouseMove={handleMouseMove}
+      className={`group relative rounded-2xl cursor-pointer bg-[#0c0c0c] ${item.span} flex flex-col h-full`}
       onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => {
-        setIsHovered(false);
-        setMousePos({ x: 0, y: 0 });
-      }}
-      style={{ perspective: 800 }}
+      onMouseLeave={() => setIsHovered(false)}
     >
-      {/* 3D tilt background */}
-      <motion.div
-        className="absolute inset-0 rounded-2xl"
-        animate={{
-          rotateX: isHovered ? -mousePos.y * 6 : 0,
-          rotateY: isHovered ? mousePos.x * 6 : 0,
-        }}
-        transition={{ type: "spring", stiffness: 200, damping: 30 }}
-      >
-        <div
-          className="absolute inset-0 opacity-[0.03] pointer-events-none"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px)",
-            backgroundSize: "20px 20px",
-          }}
-        />
-      </motion.div>
-
       {/* Glow border on hover */}
       <motion.div
         className="absolute inset-0 rounded-2xl pointer-events-none z-40"
@@ -155,43 +116,6 @@ function GearCard({
           boxShadow: `inset 0 0 0 1px ${item.accent}44, 0 0 30px ${item.accent}12`,
         }}
       />
-
-      {/* Product image — fills entire card */}
-      <motion.div
-        className="absolute inset-0 flex items-center justify-center z-10 p-6 md:p-8"
-        animate={{
-          x: isHovered ? mousePos.x * 12 : 0,
-          y: isHovered ? mousePos.y * 12 : 0,
-          scale: isHovered ? 0.92 : 1,
-        }}
-        transition={{ type: "spring", stiffness: 150, damping: 20 }}
-      >
-        <motion.div
-          className="relative w-full h-full"
-          animate={{
-            y: isHovered ? 0 : [0, -6, 0],
-          }}
-          transition={
-            isHovered
-              ? { type: "spring", stiffness: 200, damping: 20 }
-              : { duration: 4, repeat: Infinity, ease: "easeInOut" }
-          }
-        >
-          <Image
-            src={item.image}
-            alt={item.name}
-            width={item.imageW}
-            height={item.imageH}
-            className="w-full h-full object-contain"
-            style={{
-              filter: isHovered
-                ? `drop-shadow(0 0 25px ${item.accent}20) drop-shadow(0 15px 30px rgba(0,0,0,0.5))`
-                : "drop-shadow(0 8px 20px rgba(0,0,0,0.4))",
-              transition: "filter 0.4s ease",
-            }}
-          />
-        </motion.div>
-      </motion.div>
 
       {/* Category tag — top left */}
       <div className="absolute top-3 left-3 z-30">
@@ -215,40 +139,66 @@ function GearCard({
         {String(index + 1).padStart(2, "0")}
       </div>
 
-      {/* Bottom: Name always visible */}
-      <div className="absolute bottom-0 left-0 right-0 z-30 px-4 pb-3 md:px-5 md:pb-4">
-        <h3 className="text-sm md:text-base font-bold text-white tracking-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
+      {/* Image area — shrinks and lifts up on hover */}
+      <motion.div
+        className="relative flex items-center justify-center overflow-hidden z-10 rounded-t-2xl"
+        animate={{
+          flex: isHovered ? "0 0 52%" : "1 1 100%",
+          paddingTop: isHovered ? "1rem" : "2.5rem",
+          paddingBottom: isHovered ? "0.5rem" : "2.5rem",
+        }}
+        transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+      >
+        <motion.div
+          className="relative w-full h-full flex items-center justify-center px-4 md:px-6"
+          animate={{
+            y: isHovered ? -4 : 0,
+            scale: isHovered ? 0.88 : 1,
+          }}
+          transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+        >
+          <Image
+            src={item.image}
+            alt={item.name}
+            width={item.imageW}
+            height={item.imageH}
+            className="w-full h-full object-contain"
+            style={{
+              filter: isHovered
+                ? `drop-shadow(0 0 20px ${item.accent}18) drop-shadow(0 10px 25px rgba(0,0,0,0.5))`
+                : "drop-shadow(0 8px 20px rgba(0,0,0,0.4))",
+              transition: "filter 0.4s ease",
+            }}
+          />
+        </motion.div>
+      </motion.div>
+
+      {/* Name — always visible, sits between image and details */}
+      <div className="px-4 py-2.5 z-20 relative bg-[#0c0c0c]">
+        <h3 className="text-sm md:text-base font-bold text-white tracking-tight">
           {item.name}
         </h3>
       </div>
 
-      {/* Hover popup overlay — centered on card */}
+      {/* Details — slides up from below on hover, no overlap */}
       <motion.div
-        className="absolute inset-0 z-35 flex items-center justify-center"
+        className="px-4 pb-4 z-20 relative bg-[#0c0c0c] overflow-hidden"
         initial={false}
         animate={{
+          height: isHovered ? "auto" : 0,
           opacity: isHovered ? 1 : 0,
+          paddingTop: isHovered ? 0 : 0,
         }}
-        transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+        transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
       >
-        {/* Dark backdrop */}
-        <div className="absolute inset-0 bg-black/60 rounded-2xl" />
-        {/* Popup content */}
-        <div
-          className="relative rounded-xl p-4 md:p-5 w-[85%] backdrop-blur-xl"
-          style={{
-            background: `linear-gradient(135deg, ${item.accent}10, rgba(12,12,12,0.95))`,
-            border: `1px solid ${item.accent}28`,
-            boxShadow: `0 25px 60px rgba(0,0,0,0.7), 0 0 40px ${item.accent}08`,
-          }}
-        >
+        <div className="border-t border-white/5 pt-3">
           <p
             className="text-[10px] md:text-xs italic mb-1.5 font-medium"
             style={{ color: item.accent }}
           >
             {item.tagline}
           </p>
-          <p className="text-[10px] md:text-[11px] text-[#aaa] leading-relaxed mb-3 line-clamp-3">
+          <p className="text-[10px] md:text-[11px] text-[#888] leading-relaxed mb-2.5 line-clamp-2">
             {item.description}
           </p>
           <div className="flex flex-wrap gap-1.5">
@@ -259,14 +209,14 @@ function GearCard({
                 animate={
                   isHovered
                     ? { opacity: 1, scale: 1, y: 0 }
-                    : { opacity: 0, scale: 0.8, y: 6 }
+                    : { opacity: 0, scale: 0.85, y: 4 }
                 }
-                transition={{ delay: i * 0.05, duration: 0.25 }}
+                transition={{ delay: isHovered ? i * 0.04 : 0, duration: 0.2 }}
                 className="px-2 py-0.5 rounded-full text-[8px] md:text-[9px] tracking-wider font-medium"
                 style={{
                   color: `${item.accent}cc`,
-                  background: `${item.accent}12`,
-                  border: `1px solid ${item.accent}20`,
+                  background: `${item.accent}10`,
+                  border: `1px solid ${item.accent}18`,
                 }}
               >
                 {spec}
@@ -275,9 +225,6 @@ function GearCard({
           </div>
         </div>
       </motion.div>
-
-      {/* Dark gradient at bottom for name readability */}
-      <div className="absolute bottom-0 left-0 right-0 h-[30%] bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none z-20" />
 
       {/* Shine sweep */}
       <motion.div
@@ -290,7 +237,7 @@ function GearCard({
           width: "200%",
         }}
       />
-    </motion.a>
+    </motion.div>
   );
 }
 

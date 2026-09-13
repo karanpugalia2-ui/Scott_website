@@ -45,13 +45,13 @@ export default function Contact() {
           </p>
 
           <motion.a
-            href="mailto:hello@scottvisuals.com"
+            href="mailto:karanpugalia2@gmail.com"
             data-cursor-hover
             className="magnetic-btn inline-flex items-center gap-4 px-10 py-5 bg-[#c8ff00] text-[#0a0a0a] rounded-full font-bold text-lg tracking-wider hover:bg-[#d4ff33] transition-colors duration-300 mb-16"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.98 }}
           >
-            hello@scottvisuals.com
+            karanpugalia2@gmail.com
             <svg width="20" height="20" viewBox="0 0 16 16" fill="none">
               <path
                 d="M3 8H13M13 8L9 4M13 8L9 12"
@@ -71,10 +71,17 @@ export default function Contact() {
           transition={{ duration: 0.8, delay: 0.3 }}
           className="flex justify-center gap-6 mb-20"
         >
-          {["Instagram", "YouTube", "Behance", "LinkedIn"].map((social, i) => (
+          {[
+            { name: "Instagram", url: "https://www.instagram.com/scottt_73/" },
+            { name: "YouTube", url: "#" },
+            { name: "Behance", url: "#" },
+            { name: "LinkedIn", url: "#" },
+          ].map((social, i) => (
             <motion.a
-              key={social}
-              href="#"
+              key={social.name}
+              href={social.url}
+              target={social.url !== "#" ? "_blank" : undefined}
+              rel={social.url !== "#" ? "noopener noreferrer" : undefined}
               data-cursor-hover
               className="text-sm tracking-[0.15em] uppercase text-[#666] hover:text-[#c8ff00] transition-colors duration-300"
               whileHover={{ y: -2 }}
@@ -82,10 +89,20 @@ export default function Contact() {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.5 + i * 0.1 }}
             >
-              {social}
+              {social.name}
             </motion.a>
           ))}
         </motion.div>
+
+        {/* Phone number */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ delay: 0.7 }}
+          className="text-[#555] text-sm tracking-wider mb-16"
+        >
+          +91 98253 35611
+        </motion.p>
       </div>
 
       {/* Footer */}
@@ -96,7 +113,7 @@ export default function Contact() {
         className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4"
       >
         <div className="text-sm text-[#666]">
-          © 2025 Scott Visuals. All rights reserved.
+          © 2025 SCOTT. All rights reserved.
         </div>
         <div className="flex items-center gap-2 text-sm text-[#666]">
           <span>Crafted with</span>
