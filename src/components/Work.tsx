@@ -167,7 +167,7 @@ function Lightbox({
 
   return (
     <motion.div
-      className="fixed inset-0 z-[200] bg-[#0a0a0a]/95 backdrop-blur-xl flex flex-col h-[100dvh]"
+      className="fixed inset-0 z-[300] bg-[#0a0a0a]/95 backdrop-blur-xl flex flex-col h-[100dvh]"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -176,7 +176,7 @@ function Lightbox({
       onTouchEnd={onTouchEnd}
     >
       {/* Top bar */}
-      <div className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 shrink-0 relative z-20">
+      <div className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 shrink-0 relative z-[310]">
         <div className="min-w-0">
           <motion.h3
             key={project.id + "-name"}
@@ -198,7 +198,7 @@ function Lightbox({
         </div>
         <button
           onClick={onClose}
-          className="ml-4 w-10 h-10 sm:w-11 sm:h-11 rounded-full border border-white/10 flex items-center justify-center text-[#999] hover:text-white hover:border-white/30 transition-colors shrink-0"
+          className="ml-4 w-10 h-10 sm:w-11 sm:h-11 rounded-full border border-white/10 flex items-center justify-center text-[#999] hover:text-white hover:border-white/30 transition-colors shrink-0 pointer-events-auto"
           aria-label="Close"
         >
           <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2">
@@ -213,7 +213,7 @@ function Lightbox({
         {artistIndex > 0 && (
           <button
             onClick={onPrevArtist}
-            className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white/5 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 hover:border-white/30 transition-all"
+            className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white/5 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 hover:border-white/30 transition-all pointer-events-auto"
             aria-label="Previous artist"
           >
             <svg viewBox="0 0 24 24" className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -226,7 +226,7 @@ function Lightbox({
         {artistIndex < totalArtists - 1 && (
           <button
             onClick={onNextArtist}
-            className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white/5 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 hover:border-white/30 transition-all"
+            className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white/5 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 hover:border-white/30 transition-all pointer-events-auto"
             aria-label="Next artist"
           >
             <svg viewBox="0 0 24 24" className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -239,7 +239,7 @@ function Lightbox({
         {currentMedia > 0 && (
           <button
             onClick={goPrevMedia}
-            className="absolute left-12 sm:left-20 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-black/40 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/80 hover:text-white hover:bg-black/60 transition-all"
+            className="absolute left-12 sm:left-20 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-black/40 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/80 hover:text-white hover:bg-black/60 transition-all pointer-events-auto"
             aria-label="Previous photo"
           >
             <svg viewBox="0 0 24 24" className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" strokeWidth="2">
@@ -252,7 +252,7 @@ function Lightbox({
         {currentMedia < totalMedia - 1 && (
           <button
             onClick={goNextMedia}
-            className="absolute right-12 sm:right-20 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-black/40 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/80 hover:text-white hover:bg-black/60 transition-all"
+            className="absolute right-12 sm:right-20 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-black/40 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/80 hover:text-white hover:bg-black/60 transition-all pointer-events-auto"
             aria-label="Next photo"
           >
             <svg viewBox="0 0 24 24" className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" strokeWidth="2">
@@ -294,7 +294,7 @@ function Lightbox({
       </div>
 
       {/* Bottom bar */}
-      <div className="px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between shrink-0 relative z-20">
+      <div className="px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between shrink-0 relative z-[310]">
         {/* Video toggle */}
         <div className="w-24">
           {project.video && (
@@ -325,7 +325,7 @@ function Lightbox({
                     setDirection(i > currentMedia ? 1 : -1);
                     setCurrentMedia(i);
                   }}
-                  className={`rounded-full transition-all duration-300 ${
+                  className={`rounded-full transition-all duration-300 pointer-events-auto ${
                     i === currentMedia
                       ? "bg-[#c8ff00] w-4 h-1.5"
                       : "bg-white/20 hover:bg-white/40 w-1.5 h-1.5"
