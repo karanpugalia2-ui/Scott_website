@@ -56,6 +56,20 @@ export const artists: ArtistProject[] = [
       "/work/badshah/3.jpg",
     ],
     year: "2025",
+  },
+  {
+    id: "seedhe-maut",
+    artist: "Seedhe Maut",
+    tagline: "Raw bars and relentless flow — hip-hop at its finest",
+    type: "concert",
+    cover: "/work/seedhe-maut/1.jpg",
+    images: [
+      "/work/seedhe-maut/1.jpg",
+      "/work/seedhe-maut/2.jpg",
+      "/work/seedhe-maut/3.jpg",
+      "/work/seedhe-maut/4.jpg",
+    ],
+    year: "2025",
     featured: true,
   },
   {
@@ -140,5 +154,26 @@ export const artists: ArtistProject[] = [
     ],
     year: "2025",
   },
-
+  {
+    id: "raftaar",
+    artist: "Raftaar",
+    tagline: "Speed and swagger — rap with unstoppable energy",
+    type: "concert",
+    cover: "/work/raftaar/1.jpg",
+    images: [
+      "/work/raftaar/1.jpg",
+      "/work/raftaar/2.jpg",
+      "/work/raftaar/3.jpg",
+    ],
+    year: "2025",
+  },
+  {
+    id: "wish",
+    artist: "Wish",
+    tagline: "One frame, infinite emotion — a visual storyteller",
+    type: "concert",
+    cover: "/work/wish/1.jpg",
+    images: ["/work/wish/1.jpg"],
+    year: "2025",
+  },
 ];
