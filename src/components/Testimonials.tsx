@@ -29,7 +29,7 @@ export default function Testimonials() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section ref={ref} className="py-24 md:py-32 px-6 md:px-12 bg-[#0d0d0d]">
+    <section ref={ref} className="py-24 md:py-32 px-6 md:px-12 bg-[#0d0d0d]" style={{ contentVisibility: "auto" as const, containIntrinsicSize: "0 800px" }}>
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 40 }}

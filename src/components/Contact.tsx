@@ -12,6 +12,7 @@ export default function Contact() {
       id="contact"
       ref={sectionRef}
       className="py-24 md:py-32 px-6 md:px-12 relative overflow-hidden"
+      style={{ contentVisibility: "auto" as const, containIntrinsicSize: "0 1000px" }}
     >
       {/* Background glow */}
       <div className="absolute inset-0 pointer-events-none">

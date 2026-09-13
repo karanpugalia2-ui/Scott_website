@@ -31,7 +31,7 @@ body {
   color: #ededed;
   font-family: var(--font-sans), system-ui, sans-serif;
   overflow-x: hidden;
-  contain: layout style;
+  contain: style;
 }
 
 ::-webkit-scrollbar {

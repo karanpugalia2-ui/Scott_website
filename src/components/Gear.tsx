@@ -255,6 +255,7 @@ export default function Gear() {
       id="gear"
       ref={sectionRef}
       className="py-24 md:py-32 relative"
+      style={{ contentVisibility: "auto" as const, containIntrinsicSize: "0 1800px" }}
     >
       {/* Background radial glow */}
       <div className="absolute inset-0 pointer-events-none">

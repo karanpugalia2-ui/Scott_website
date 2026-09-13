@@ -20,6 +20,7 @@ export default function About() {
       id="about"
       ref={sectionRef}
       className="py-24 md:py-32 px-6 md:px-12 relative"
+      style={{ contentVisibility: "auto" as const, containIntrinsicSize: "0 1200px" }}
     >
       {/* Subtle background accent */}
       <motion.div
@@ -70,7 +71,6 @@ export default function About() {
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                   sizes="(max-width: 1024px) 100vw, 400px"
-                  priority
                 />
                 <div className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-2xl" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />

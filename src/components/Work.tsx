@@ -266,7 +266,7 @@ export default function Work() {
   const allProjects = artists;
 
   return (
-    <section id="work" ref={sectionRef} className="py-24 md:py-32 relative">
+    <section id="work" ref={sectionRef} className="py-24 md:py-32 relative" style={{ contentVisibility: "auto" as const, containIntrinsicSize: "0 2000px" }}>
       <div className="px-6 md:px-12 mb-12">
         <motion.div
           initial={{ opacity: 0, y: 40 }}

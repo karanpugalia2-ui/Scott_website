@@ -32,6 +32,7 @@ export default function Hero() {
           muted
           loop
           playsInline
+          preload="none"
           className="w-full h-full object-cover"
           poster="/work/chaar-diwari/1.jpg"
         />

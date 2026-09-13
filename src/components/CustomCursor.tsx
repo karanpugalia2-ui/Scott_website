@@ -74,7 +74,7 @@ export default function CustomCursor() {
     <>
       <div
         ref={cursorRef}
-        className="fixed top-0 left-0 w-10 h-10 rounded-full border border-[#c8ff00]/50 pointer-events-none z-[9998] mix-blend-difference hidden md:block"
+        className="fixed top-0 left-0 w-10 h-10 rounded-full border border-[#c8ff00]/50 pointer-events-none z-[10001] mix-blend-difference hidden md:block"
         style={{
           opacity: isHidden ? 0 : 1,
           transform: isHovering
@@ -86,7 +86,7 @@ export default function CustomCursor() {
       />
       <div
         ref={cursorDotRef}
-        className="fixed top-0 left-0 w-2 h-2 rounded-full bg-[#c8ff00] pointer-events-none z-[9998] hidden md:block"
+        className="fixed top-0 left-0 w-2 h-2 rounded-full bg-[#c8ff00] pointer-events-none z-[10001] hidden md:block"
         style={{ opacity: isHidden ? 0 : 1 }}
       />
     </>

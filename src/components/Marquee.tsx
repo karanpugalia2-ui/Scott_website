@@ -35,7 +35,7 @@ export default function Marquee() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section ref={ref} className="py-12 overflow-hidden border-y border-white/5">
+    <section ref={ref} className="py-12 overflow-hidden border-y border-white/5" style={{ contentVisibility: "auto" as const, containIntrinsicSize: "0 200px" }}>
       <motion.div
         initial={{ opacity: 0 }}
         animate={isInView ? { opacity: 1 } : {}}
