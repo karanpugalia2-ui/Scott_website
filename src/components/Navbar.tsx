@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useScroll, useMotionValueEvent } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -13,19 +13,15 @@ const navLinks = [
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const { scrollY } = useScroll();
-
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    setScrolled(latest > 50);
-  });
+  const { scrollYProgress } = useScroll();
+  const bgOpacity = useTransform(scrollYProgress, [0, 0.1], [0, 1]);
 
   return (
     <>
       <motion.nav
-        className="fixed top-0 left-0 right-0 z-[100] px-6 md:px-12 py-5 flex items-center justify-between transition-colors duration-500"
+        className="fixed top-0 left-0 right-0 z-[100] px-6 md:px-12 py-5 flex items-center justify-between"
         style={{
-          backgroundColor: scrolled ? "rgba(10, 10, 10, 0.9)" : "transparent",
+          backgroundColor: `rgba(10, 10, 10, ${bgOpacity.get()})`,
         }}
       >
         <motion.div
