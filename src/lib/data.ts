@@ -150,14 +150,4 @@ export const artists: ArtistProject[] = [
     video: "/videos/daman-documentary.mp4",
     year: "2025",
   },
-  {
-    id: "projections-2026",
-    artist: "Projections 2026",
-    tagline: "University fest — three days of chaos and magic",
-    type: "event",
-    cover: "/work/mc-square/2.jpg",
-    images: ["/work/mc-square/2.jpg", "/work/mc-square/3.jpg"],
-    video: "/videos/projections-2026.mp4",
-    year: "2026",
-  },
 ];
