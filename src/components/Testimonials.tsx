@@ -2,7 +2,6 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import Image from "next/image";
 
 const testimonials = [
   {
@@ -32,16 +31,11 @@ export default function Testimonials() {
   return (
     <section ref={ref} className="py-24 md:py-32 px-6 md:px-12 bg-[#0d0d0d] relative overflow-hidden" style={{ contentVisibility: "auto" as const, containIntrinsicSize: "0 800px" }}>
       {/* Background Seedhe Maut photo */}
-      <div className="absolute inset-0 pointer-events-none">
-        <Image
-          src="/work/seedhe-maut/1.jpg"
-          alt=""
-          fill
-          className="object-cover object-top opacity-[0.07]"
-          sizes="100vw"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0d0d0d] via-[#0d0d0d]/80 to-[#0d0d0d]" />
-      </div>
+      <div
+        className="absolute inset-0 pointer-events-none bg-cover bg-center opacity-[0.08]"
+        style={{ backgroundImage: "url(/work/seedhe-maut/1.jpg)" }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0d0d0d] via-[#0d0d0d]/70 to-[#0d0d0d] pointer-events-none" />
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
