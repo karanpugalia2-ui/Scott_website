@@ -109,6 +109,7 @@ function Lightbox({
   const [currentMedia, setCurrentMedia] = useState(0);
   const [direction, setDirection] = useState(0);
   const touchStartX = useRef(0);
+  const navRef = useRef({ goNextMedia: () => {}, goPrevMedia: () => {} });
 
   const totalMedia = project.images.length + (project.video ? 1 : 0);
   const isVideo = project.video && currentMedia === project.images.length;
@@ -126,22 +127,32 @@ function Lightbox({
     }
   };
 
-  // Reset to first image when project changes
+  navRef.current = { goNextMedia, goPrevMedia };
+
+  // Reset to first media when artist changes
   useEffect(() => {
     setCurrentMedia(0);
     setDirection(0);
   }, [project.id]);
 
-  // Keyboard
+  // Disable page scroll
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, []);
+
+  // Keyboard — uses ref to avoid stale closures
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
-      if (e.key === "ArrowRight") goNextMedia();
-      if (e.key === "ArrowLeft") goPrevMedia();
+      if (e.key === "ArrowRight") navRef.current.goNextMedia();
+      if (e.key === "ArrowLeft") navRef.current.goPrevMedia();
     };
     document.addEventListener("keydown", handleKey);
     return () => document.removeEventListener("keydown", handleKey);
-  }, [onClose, currentMedia, totalMedia]);
+  }, [onClose]);
 
   // Swipe gestures
   const onTouchStart = (e: React.TouchEvent) => {
@@ -167,182 +178,192 @@ function Lightbox({
 
   return (
     <motion.div
-      className="fixed inset-0 z-[300] bg-[#0a0a0a]/95 backdrop-blur-xl flex flex-col h-[100dvh]"
+      className="fixed inset-0 z-[300] bg-[#0a0a0a]/95 backdrop-blur-xl"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
-      onTouchStart={onTouchStart}
-      onTouchEnd={onTouchEnd}
     >
-      {/* Top bar */}
-      <div className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 shrink-0 relative z-[310]">
-        <div className="min-w-0">
-          <motion.h3
-            key={project.id + "-name"}
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-lg sm:text-xl font-bold text-white truncate"
-          >
-            {project.artist}
-          </motion.h3>
-          <motion.p
-            key={project.id + "-tag"}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.1 }}
-            className="text-xs sm:text-sm text-[#666] truncate"
-          >
-            {project.tagline}
-          </motion.p>
-        </div>
-        <button
-          onClick={onClose}
-          className="ml-4 w-10 h-10 sm:w-11 sm:h-11 rounded-full border border-white/10 flex items-center justify-center text-[#999] hover:text-white hover:border-white/30 transition-colors shrink-0 pointer-events-auto"
-          aria-label="Close"
+      {/* Top-left: Artist info */}
+      <div className="absolute top-0 left-0 z-50 px-5 sm:px-8 py-5">
+        <motion.div
+          key={project.id + "-cat"}
+          initial={{ opacity: 0, x: -10 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="text-[#c8ff00] text-[10px] tracking-[0.3em] uppercase font-medium mb-1"
         >
-          <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" />
+          {project.type === "concert"
+            ? "Concert"
+            : project.type === "music-video"
+            ? "Music Video"
+            : project.type === "documentary"
+            ? "Documentary"
+            : "Event"}{" "}
+          — {project.year}
+        </motion.div>
+        <motion.h3
+          key={project.id + "-name"}
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.05 }}
+          className="text-xl sm:text-2xl font-bold text-white"
+        >
+          {project.artist}
+        </motion.h3>
+      </div>
+
+      {/* Top-right: Close button */}
+      <button
+        onClick={onClose}
+        className="absolute top-5 right-5 sm:right-8 z-50 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/5 backdrop-blur-md border border-white/10 flex items-center justify-center text-[#999] hover:text-white hover:bg-white/10 hover:border-white/30 transition-all"
+        aria-label="Close"
+      >
+        <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" />
+        </svg>
+      </button>
+
+      {/* OUTER NAV — Previous artist */}
+      {artistIndex > 0 && (
+        <button
+          onClick={onPrevArtist}
+          className="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 z-50 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/5 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all"
+          aria-label="Previous artist"
+        >
+          <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </button>
-      </div>
+      )}
 
-      {/* Main content area */}
-      <div className="flex-1 relative flex items-center justify-center min-h-0">
-        {/* OUTER NAV — Previous artist (left edge) */}
-        {artistIndex > 0 && (
-          <button
-            onClick={onPrevArtist}
-            className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white/5 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 hover:border-white/30 transition-all pointer-events-auto"
-            aria-label="Previous artist"
-          >
-            <svg viewBox="0 0 24 24" className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
-        )}
+      {/* OUTER NAV — Next artist */}
+      {artistIndex < totalArtists - 1 && (
+        <button
+          onClick={onNextArtist}
+          className="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 z-50 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/5 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all"
+          aria-label="Next artist"
+        >
+          <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+      )}
 
-        {/* OUTER NAV — Next artist (right edge) */}
-        {artistIndex < totalArtists - 1 && (
-          <button
-            onClick={onNextArtist}
-            className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white/5 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 hover:border-white/30 transition-all pointer-events-auto"
-            aria-label="Next artist"
-          >
-            <svg viewBox="0 0 24 24" className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
-        )}
-
-        {/* INNER NAV — Previous media */}
-        {currentMedia > 0 && (
-          <button
-            onClick={goPrevMedia}
-            className="absolute left-12 sm:left-20 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-black/40 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/80 hover:text-white hover:bg-black/60 transition-all pointer-events-auto"
-            aria-label="Previous photo"
-          >
-            <svg viewBox="0 0 24 24" className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
-        )}
-
-        {/* INNER NAV — Next media */}
-        {currentMedia < totalMedia - 1 && (
-          <button
-            onClick={goNextMedia}
-            className="absolute right-12 sm:right-20 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-black/40 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/80 hover:text-white hover:bg-black/60 transition-all pointer-events-auto"
-            aria-label="Next photo"
-          >
-            <svg viewBox="0 0 24 24" className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
-        )}
-
-        {/* Media content */}
-        <div className="px-16 sm:px-24 py-2 w-full h-full flex items-center justify-center overflow-hidden">
-          <AnimatePresence mode="wait" custom={direction}>
-            {isVideo && project.video ? (
-              <motion.video
-                key={project.id + "-video"}
-                src={project.video}
-                controls
-                autoPlay
-                className="max-w-full max-h-full rounded-lg"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-              />
-            ) : (
-              <motion.img
-                key={project.id + "-" + currentMedia}
-                src={project.images[currentMedia]}
-                alt={`${project.artist} - Photo ${currentMedia + 1}`}
-                className="max-w-full max-h-full object-contain select-none"
-                custom={direction}
-                initial={{ opacity: 0, x: direction >= 0 ? 40 : -40 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: direction >= 0 ? -40 : 40 }}
-                transition={{ duration: 0.25, ease: "easeOut" }}
-                draggable={false}
-              />
-            )}
-          </AnimatePresence>
-        </div>
-      </div>
-
-      {/* Bottom bar */}
-      <div className="px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between shrink-0 relative z-[310]">
-        {/* Video toggle */}
-        <div className="w-24">
-          {project.video && (
+      {/* Floating media window */}
+      <div
+        className="absolute inset-0 flex items-center justify-center z-10"
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
+      >
+        <motion.div
+          key={project.id}
+          initial={{ opacity: 0, scale: 0.97 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
+          className="relative w-[92vw] h-[82vh] sm:w-[80vw] sm:h-[82vh] max-w-[1200px] rounded-2xl overflow-hidden bg-black/30 border border-white/5"
+        >
+          {/* INNER NAV — Previous media */}
+          {currentMedia > 0 && (
             <button
-              onClick={() => setCurrentMedia(isVideo ? 0 : project.images.length)}
-              className={`px-3 py-1.5 rounded-full text-[10px] sm:text-xs tracking-wider uppercase transition-all ${
-                isVideo
-                  ? "bg-[#c8ff00] text-[#0a0a0a]"
-                  : "border border-white/10 text-[#999] hover:text-white hover:border-white/30"
-              }`}
+              onClick={goPrevMedia}
+              className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/50 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:bg-black/70 transition-all"
+              aria-label="Previous photo"
             >
-              {isVideo ? "Viewing Video" : "Play Video"}
+              <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
             </button>
           )}
-        </div>
 
-        {/* Counter + dots */}
-        <div className="flex flex-col items-center gap-2">
-          <span className="text-xs sm:text-sm text-[#666] tabular-nums">
-            {currentMedia + 1} / {totalMedia}
-          </span>
-          {totalMedia <= 15 && (
-            <div className="flex items-center gap-1">
-              {Array.from({ length: totalMedia }).map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => {
-                    setDirection(i > currentMedia ? 1 : -1);
-                    setCurrentMedia(i);
-                  }}
-                  className={`rounded-full transition-all duration-300 pointer-events-auto ${
-                    i === currentMedia
-                      ? "bg-[#c8ff00] w-4 h-1.5"
-                      : "bg-white/20 hover:bg-white/40 w-1.5 h-1.5"
-                  }`}
-                  aria-label={`Go to media ${i + 1}`}
-                />
-              ))}
-            </div>
+          {/* INNER NAV — Next media */}
+          {currentMedia < totalMedia - 1 && (
+            <button
+              onClick={goNextMedia}
+              className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/50 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:bg-black/70 transition-all"
+              aria-label="Next photo"
+            >
+              <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
           )}
-        </div>
 
-        {/* Artist position */}
-        <div className="w-24 flex justify-end">
-          <span className="text-[10px] sm:text-xs text-[#444] tabular-nums">
-            {artistIndex + 1} / {totalArtists} artists
-          </span>
-        </div>
+          {/* Media content */}
+          <div className="w-full h-full flex items-center justify-center p-4 sm:p-6">
+            <AnimatePresence mode="wait" custom={direction}>
+              {isVideo && project.video ? (
+                <motion.video
+                  key={project.id + "-video"}
+                  src={project.video}
+                  controls
+                  autoPlay
+                  className="max-w-full max-h-full rounded-lg"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                />
+              ) : (
+                <motion.img
+                  key={project.id + "-" + currentMedia}
+                  src={project.images[currentMedia]}
+                  alt={`${project.artist} - Photo ${currentMedia + 1}`}
+                  className="max-w-full max-h-full object-contain select-none"
+                  custom={direction}
+                  initial={{ opacity: 0, x: direction >= 0 ? 40 : -40 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: direction >= 0 ? -40 : 40 }}
+                  transition={{ duration: 0.25, ease: "easeOut" }}
+                  draggable={false}
+                />
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Bottom counter bar — inside the floating window */}
+          <div className="absolute bottom-0 left-0 right-0 z-30 flex items-center justify-center pb-3">
+            <div className="flex items-center gap-3 px-4 py-2 rounded-full bg-black/60 backdrop-blur-md border border-white/10">
+              {project.video && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setCurrentMedia(isVideo ? 0 : project.images.length);
+                  }}
+                  className={`px-2.5 py-1 rounded-full text-[9px] tracking-wider uppercase transition-all ${
+                    isVideo ? "bg-[#c8ff00] text-[#0a0a0a]" : "text-[#999] hover:text-white"
+                  }`}
+                >
+                  {isVideo ? "Video" : "Video"}
+                </button>
+              )}
+              <span className="text-xs text-white/60 tabular-nums">
+                {currentMedia + 1} / {totalMedia}
+              </span>
+              {totalMedia <= 15 && (
+                <div className="hidden sm:flex items-center gap-1">
+                  {Array.from({ length: totalMedia }).map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setDirection(i > currentMedia ? 1 : -1);
+                        setCurrentMedia(i);
+                      }}
+                      className={`rounded-full transition-all duration-300 ${
+                        i === currentMedia
+                          ? "bg-[#c8ff00] w-4 h-1.5"
+                          : "bg-white/20 hover:bg-white/40 w-1.5 h-1.5"
+                      }`}
+                      aria-label={`Go to media ${i + 1}`}
+                    />
+                  ))}
+                </div>
+              )}
+              <span className="text-[10px] text-white/25 tabular-nums">
+                {artistIndex + 1}/{totalArtists}
+              </span>
+            </div>
+          </div>
+        </motion.div>
       </div>
     </motion.div>
   );
