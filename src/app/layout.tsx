@@ -45,6 +45,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} antialiased`}
     >
+      <head>
+        <link rel="preload" as="image" href="/work/chaar-diwari/1.jpg" />
+        <link rel="preload" as="image" href="/work/seedhe-maut/1.jpg" />
+        <link rel="preload" as="image" href="/work/sunidhi-chauhan/1.jpg" />
+      </head>
       <body className="min-h-screen bg-[#0a0a0a] text-[#ededed]">
         <div className="grain-overlay" />
         {children}

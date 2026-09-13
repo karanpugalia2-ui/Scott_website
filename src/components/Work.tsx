@@ -2,7 +2,6 @@
 
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState, useEffect, useCallback } from "react";
-import Image from "next/image";
 import { artists, type ArtistProject } from "@/lib/data";
 
 function ArtistSlide({
@@ -29,12 +28,11 @@ function ArtistSlide({
             : "ring-1 ring-white/5"
         }`}
       >
-        <Image
+        <img
           src={project.cover}
           alt={project.artist}
-          fill
-          className="object-cover transition-transform duration-700 group-hover:scale-110"
-          sizes="(max-width: 768px) 320px, (max-width: 1200px) 420px, 500px"
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          loading="lazy"
         />
 
         {/* Gradient overlay */}
@@ -158,18 +156,17 @@ function Lightbox({
           <AnimatePresence mode="wait">
             <motion.div
               key={currentImage}
-              className="relative w-full h-full max-w-5xl"
+              className="flex items-center justify-center w-full h-full"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.3 }}
             >
-              <Image
+              <img
                 src={project.images[currentImage]}
                 alt={`${project.artist} - Photo ${currentImage + 1}`}
-                fill
-                className="object-contain"
-                sizes="100vw"
+                className="max-w-full max-h-full object-contain rounded-lg"
+                loading="eager"
               />
             </motion.div>
           </AnimatePresence>
@@ -370,12 +367,11 @@ export default function Work() {
               onClick={() => setSelectedProject(project)}
             >
               <div className="relative aspect-[3/4] overflow-lg rounded-lg mb-3 ring-1 ring-white/5 group-hover:ring-[#c8ff00]/30 transition-all duration-300">
-                <Image
+                <img
                   src={project.cover}
                   alt={project.artist}
-                  fill
-                  className="object-cover rounded-lg transition-transform duration-500 group-hover:scale-105"
-                  sizes="260px"
+                  className="absolute inset-0 w-full h-full object-cover rounded-lg transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-lg" />
                 <div className="absolute bottom-3 left-3 right-3">
