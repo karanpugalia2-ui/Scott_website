@@ -52,7 +52,7 @@ export default function Hero() {
           className="mb-6"
         >
           <span className="text-sm tracking-[0.3em] uppercase text-[#c8ff00] font-medium">
-            Photography & Videography
+            Photography & Cinematography
           </span>
         </motion.div>
 
