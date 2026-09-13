@@ -143,9 +143,9 @@ function GearCard({
       <motion.div
         className="relative flex items-center justify-center overflow-hidden z-10 rounded-t-2xl"
         animate={{
-          flex: isHovered ? "0 0 52%" : "1 1 100%",
-          paddingTop: isHovered ? "1rem" : "2.5rem",
-          paddingBottom: isHovered ? "0.5rem" : "2.5rem",
+          flex: isHovered ? "0 0 42%" : "1 1 100%",
+          paddingTop: isHovered ? "0.75rem" : "2rem",
+          paddingBottom: isHovered ? "0.25rem" : "2rem",
         }}
         transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
       >
@@ -174,34 +174,33 @@ function GearCard({
       </motion.div>
 
       {/* Name — always visible, sits between image and details */}
-      <div className="px-4 py-2.5 z-20 relative bg-[#0c0c0c]">
-        <h3 className="text-sm md:text-base font-bold text-white tracking-tight">
+      <div className="px-4 py-1.5 z-20 relative bg-[#0c0c0c]">
+        <h3 className="text-xs md:text-sm font-bold text-white tracking-tight">
           {item.name}
         </h3>
       </div>
 
       {/* Details — slides up from below on hover, no overlap */}
       <motion.div
-        className="px-4 pb-4 z-20 relative bg-[#0c0c0c] overflow-hidden"
+        className="px-4 pb-3 z-20 relative bg-[#0c0c0c] overflow-hidden"
         initial={false}
         animate={{
           height: isHovered ? "auto" : 0,
           opacity: isHovered ? 1 : 0,
-          paddingTop: isHovered ? 0 : 0,
         }}
         transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
       >
-        <div className="border-t border-white/5 pt-3">
+        <div className="border-t border-white/5 pt-2">
           <p
-            className="text-[10px] md:text-xs italic mb-1.5 font-medium"
+            className="text-[9px] md:text-[10px] italic mb-1 font-medium"
             style={{ color: item.accent }}
           >
             {item.tagline}
           </p>
-          <p className="text-[10px] md:text-[11px] text-[#888] leading-relaxed mb-2.5 line-clamp-2">
+          <p className="text-[9px] md:text-[10px] text-[#888] leading-relaxed mb-2 line-clamp-2">
             {item.description}
           </p>
-          <div className="flex flex-wrap gap-1.5">
+          <div className="flex flex-wrap gap-1">
             {item.specs.map((spec, i) => (
               <motion.span
                 key={spec}
@@ -212,7 +211,7 @@ function GearCard({
                     : { opacity: 0, scale: 0.85, y: 4 }
                 }
                 transition={{ delay: isHovered ? i * 0.04 : 0, duration: 0.2 }}
-                className="px-2 py-0.5 rounded-full text-[8px] md:text-[9px] tracking-wider font-medium"
+                className="px-1.5 py-px rounded-full text-[7px] md:text-[8px] tracking-wider font-medium"
                 style={{
                   color: `${item.accent}cc`,
                   background: `${item.accent}10`,
