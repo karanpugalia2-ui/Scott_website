@@ -111,7 +111,7 @@ function GearCard({
       <motion.div
         className="absolute inset-0 rounded-2xl pointer-events-none z-40"
         animate={{ opacity: isHovered ? 1 : 0 }}
-        transition={{ duration: 0.3 }}
+        transition={{ duration: 0.5, ease: "easeInOut" }}
         style={{
           boxShadow: `inset 0 0 0 1px ${item.accent}44, 0 0 30px ${item.accent}12`,
         }}
@@ -147,7 +147,7 @@ function GearCard({
           paddingTop: isHovered ? "0.5rem" : "1.25rem",
           paddingBottom: isHovered ? "0.25rem" : "1.25rem",
         }}
-        transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+        transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
       >
         <motion.div
           className="relative w-full h-full flex items-center justify-center px-2 md:px-4"
@@ -155,7 +155,7 @@ function GearCard({
             y: isHovered ? -4 : 0,
             scale: isHovered ? 0.88 : 1,
           }}
-          transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+          transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
         >
           <Image
             src={item.image}
@@ -167,7 +167,7 @@ function GearCard({
               filter: isHovered
                 ? `drop-shadow(0 0 20px ${item.accent}18) drop-shadow(0 10px 25px rgba(0,0,0,0.5))`
                 : "drop-shadow(0 8px 20px rgba(0,0,0,0.4))",
-              transition: "filter 0.4s ease",
+              transition: "filter 0.5s ease",
             }}
           />
         </motion.div>
@@ -188,7 +188,7 @@ function GearCard({
           height: isHovered ? "auto" : 0,
           opacity: isHovered ? 1 : 0,
         }}
-        transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
+        transition={{ duration: 0.45, ease: [0.32, 0.72, 0, 1] }}
       >
         <div className="border-t border-white/5 pt-2">
           <p
@@ -210,7 +210,7 @@ function GearCard({
                     ? { opacity: 1, scale: 1, y: 0 }
                     : { opacity: 0, scale: 0.85, y: 4 }
                 }
-                transition={{ delay: isHovered ? i * 0.04 : 0, duration: 0.2 }}
+                transition={{ delay: isHovered ? i * 0.04 : 0, duration: 0.3, ease: "easeOut" }}
                 className="px-2 py-0.5 rounded-full text-[10px] md:text-[11px] tracking-wider font-medium"
                 style={{
                   color: `${item.accent}cc`,
