@@ -23,7 +23,7 @@ export const artists: ArtistProject[] = [
       "/work/chaar-diwari/3.jpg",
     ],
     video: "/videos/chaar-diwari-bits-goa.mp4",
-    year: "2025",
+    year: "2026",
     featured: true,
   },
   {
