@@ -140,14 +140,5 @@ export const artists: ArtistProject[] = [
     ],
     year: "2025",
   },
-  {
-    id: "daman-documentary",
-    artist: "Daman Documentary",
-    tagline: "A visual love letter to the coastal town",
-    type: "documentary",
-    cover: "/work/ravator/3.jpg",
-    images: ["/work/ravator/3.jpg", "/work/ravator/4.jpg"],
-    video: "/videos/daman-documentary.mp4",
-    year: "2025",
-  },
+
 ];
