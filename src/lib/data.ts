@@ -27,6 +27,21 @@ export const artists: ArtistProject[] = [
     featured: true,
   },
   {
+    id: "seedhe-maut",
+    artist: "Seedhe Maut",
+    tagline: "Raw bars and relentless flow — hip-hop at its finest",
+    type: "concert",
+    cover: "/work/seedhe-maut/1.jpg",
+    images: [
+      "/work/seedhe-maut/1.jpg",
+      "/work/seedhe-maut/2.jpg",
+      "/work/seedhe-maut/3.jpg",
+      "/work/seedhe-maut/4.jpg",
+    ],
+    year: "2025",
+    featured: true,
+  },
+  {
     id: "sunidhi-chauhan",
     artist: "Sunidhi Chauhan",
     tagline: "The queen of stage — power, grace, and everything in between",
@@ -56,21 +71,6 @@ export const artists: ArtistProject[] = [
       "/work/badshah/3.jpg",
     ],
     year: "2025",
-  },
-  {
-    id: "seedhe-maut",
-    artist: "Seedhe Maut",
-    tagline: "Raw bars and relentless flow — hip-hop at its finest",
-    type: "concert",
-    cover: "/work/seedhe-maut/1.jpg",
-    images: [
-      "/work/seedhe-maut/1.jpg",
-      "/work/seedhe-maut/2.jpg",
-      "/work/seedhe-maut/3.jpg",
-      "/work/seedhe-maut/4.jpg",
-    ],
-    year: "2025",
-    featured: true,
   },
   {
     id: "aditya-rikhari",
