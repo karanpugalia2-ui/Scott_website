@@ -32,10 +32,10 @@ export default function Testimonials() {
     <section ref={ref} className="py-24 md:py-32 px-6 md:px-12 bg-[#0d0d0d] relative overflow-hidden" style={{ contentVisibility: "auto" as const, containIntrinsicSize: "0 800px" }}>
       {/* Background Seedhe Maut photo */}
       <div
-        className="absolute inset-0 pointer-events-none bg-cover bg-center opacity-[0.08]"
-        style={{ backgroundImage: "url(/work/seedhe-maut/1.jpg)" }}
+        className="absolute inset-0 pointer-events-none bg-cover bg-center opacity-70"
+        style={{ backgroundImage: "url(/work/seedhe-maut/3.jpg)" }}
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0d0d0d] via-[#0d0d0d]/70 to-[#0d0d0d] pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0d0d0d]/60 via-transparent to-[#0d0d0d]/80 pointer-events-none" />
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
