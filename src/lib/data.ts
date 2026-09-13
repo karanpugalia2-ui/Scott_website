@@ -14,7 +14,7 @@ export const artists: ArtistProject[] = [
   {
     id: "chaar-diwari",
     artist: "Chaar Diwari",
-    tagline: "x BITS Goa — Raw energy, untamed sound",
+    tagline: "Spree — BITS Goa 2026",
     type: "concert",
     cover: "/work/chaar-diwari/1.jpg",
     images: [
@@ -29,7 +29,7 @@ export const artists: ArtistProject[] = [
   {
     id: "seedhe-maut",
     artist: "Seedhe Maut",
-    tagline: "Raw bars and relentless flow — hip-hop at its finest",
+    tagline: "Spree — BITS Goa 2025",
     type: "concert",
     cover: "/work/seedhe-maut/1.jpg",
     images: [
@@ -44,7 +44,7 @@ export const artists: ArtistProject[] = [
   {
     id: "sunidhi-chauhan",
     artist: "Sunidhi Chauhan",
-    tagline: "The queen of stage — power, grace, and everything in between",
+    tagline: "Waves 2025",
     type: "concert",
     cover: "/work/sunidhi-chauhan/1.jpg",
     images: [
