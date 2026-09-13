@@ -191,18 +191,20 @@ export default function Work() {
               key={project.id}
               className="flex-shrink-0 w-[200px] md:w-[260px] group"
             >
-              <div className="relative aspect-[3/4] overflow-hidden rounded-lg mb-3 ring-1 ring-white/5 group-hover:ring-[#c8ff00]/30 transition-all duration-300 group-hover:shadow-[0_0_20px_rgba(200,255,0,0.15)]">
+              <div className="aspect-[3/4] rounded-lg mb-3 ring-1 ring-white/5 group-hover:ring-[#c8ff00]/30 group-hover:shadow-[0_0_20px_rgba(200,255,0,0.15)] transition-all duration-300">
+                <div className="relative w-full h-full overflow-hidden rounded-lg">
                 <img
                   src={project.cover}
                   alt={project.artist}
-                  className="absolute inset-0 w-full h-full object-cover rounded-lg transition-transform duration-500 group-hover:scale-105"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-lg" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
                 <div className="absolute bottom-3 left-3 right-3">
                   <h4 className="text-sm font-bold text-white">
                     {project.artist}
                   </h4>
+                </div>
                 </div>
               </div>
             </div>
