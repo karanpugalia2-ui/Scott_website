@@ -6,21 +6,21 @@ import { useRef } from "react";
 const testimonials = [
   {
     quote:
-      "Scott doesn't just take photos — he captures feelings. Every shot from our concert was electric.",
-    author: "Festival Organizer",
-    event: "NH7 Weekender",
+      "The photos were amazing, the edits were really impressive, and the overall work was next level.",
+    author: "Ravator",
+    event: "Waves 2025",
   },
   {
     quote:
-      "Professional, creative, and always delivers beyond expectations. His video work is cinematic gold.",
-    author: "Independent Artist",
-    event: "Music Video Project",
+      "Bro, really good work. Loved the photos and the way you captured the moments.",
+    author: "Dev Negi",
+    event: "Manager",
   },
   {
     quote:
-      "The energy in his concert photos is unreal. You can literally hear the music through the images.",
-    author: "Music Blog Editor",
-    event: "Coverage Review",
+      "The video looks amazing, bro. You really understood the vibe and captured it perfectly. Great work.",
+    author: "Chardiwari Team",
+    event: "BITS Goa 2025",
   },
 ];
 
@@ -36,7 +36,7 @@ export default function Testimonials() {
         style={{ backgroundImage: "url(/work/seedhe-maut/3.jpg)" }}
       />
       <div className="absolute inset-0 bg-gradient-to-b from-[#0d0d0d]/60 via-transparent to-[#0d0d0d]/80 pointer-events-none" />
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
