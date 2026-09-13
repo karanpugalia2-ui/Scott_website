@@ -31,6 +31,7 @@ body {
   color: #ededed;
   font-family: var(--font-sans), system-ui, sans-serif;
   overflow-x: hidden;
+  contain: layout style;
 }
 
 ::-webkit-scrollbar {
@@ -58,7 +59,9 @@ body {
   pointer-events: none;
   z-index: 9999;
   animation: grain 8s steps(10) infinite;
-  opacity: 0.5;
+  opacity: 0.35;
+  will-change: transform;
+  contain: strict;
 }
 
 @keyframes grain {
@@ -97,6 +100,10 @@ body {
   50% { transform: translateY(-20px); }
 }
 
+.animate-float {
+  will-change: transform;
+}
+
 @keyframes marquee {
   0% { transform: translateX(0%); }
   100% { transform: translateX(-50%); }
@@ -104,6 +111,7 @@ body {
 
 .animate-marquee {
   animation: marquee 25s linear infinite;
+  will-change: transform;
 }
 
 @keyframes pulse-glow {
@@ -122,6 +130,7 @@ body {
 .hero-gradient {
   background: radial-gradient(ellipse at 20% 50%, rgba(200, 255, 0, 0.08) 0%, transparent 50%),
               radial-gradient(ellipse at 80% 20%, rgba(200, 255, 0, 0.04) 0%, transparent 40%);
+  contain: layout style;
 }
 
 .card-hover {
@@ -155,6 +164,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  contain: layout style;
 }
 
 .gear-grid-left {
@@ -162,10 +172,12 @@ body {
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 234px 234px;
   gap: 12px;
+  contain: layout style;
 }
 
 .gear-grid-right {
   height: 280px;
+  contain: layout style;
 }
 
 @media (min-width: 768px) {

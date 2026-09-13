@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
 
 export default function CustomCursor() {
   const cursorRef = useRef<HTMLDivElement>(null);
   const cursorDotRef = useRef<HTMLDivElement>(null);
   const [isHovering, setIsHovering] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
+  const rafRef = useRef<number>(0);
 
   useEffect(() => {
     const cursor = cursorRef.current;
@@ -29,48 +29,60 @@ export default function CustomCursor() {
       cursorX += (mouseX - cursorX) * 0.12;
       cursorY += (mouseY - cursorY) * 0.12;
       cursor.style.transform = `translate(${cursorX - 20}px, ${cursorY - 20}px)`;
-      requestAnimationFrame(animate);
+      rafRef.current = requestAnimationFrame(animate);
     };
 
-    const onMouseEnterInteractive = () => setIsHovering(true);
-    const onMouseLeaveInteractive = () => setIsHovering(false);
+    const onMouseOver = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (
+        target.closest("a, button, [data-cursor-hover], input, textarea")
+      ) {
+        setIsHovering(true);
+      }
+    };
+
+    const onMouseOut = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (
+        target.closest("a, button, [data-cursor-hover], input, textarea")
+      ) {
+        setIsHovering(false);
+      }
+    };
+
     const onMouseLeave = () => setIsHidden(true);
     const onMouseEnter = () => setIsHidden(false);
 
-    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mousemove", onMouseMove, { passive: true });
+    document.addEventListener("mouseover", onMouseOver, { passive: true });
+    document.addEventListener("mouseout", onMouseOut, { passive: true });
     document.addEventListener("mouseleave", onMouseLeave);
     document.addEventListener("mouseenter", onMouseEnter);
-    animate();
-
-    const interactives = document.querySelectorAll(
-      "a, button, [data-cursor-hover], input, textarea"
-    );
-    interactives.forEach((el) => {
-      el.addEventListener("mouseenter", onMouseEnterInteractive);
-      el.addEventListener("mouseleave", onMouseLeaveInteractive);
-    });
+    rafRef.current = requestAnimationFrame(animate);
 
     return () => {
       document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseover", onMouseOver);
+      document.removeEventListener("mouseout", onMouseOut);
       document.removeEventListener("mouseleave", onMouseLeave);
       document.removeEventListener("mouseenter", onMouseEnter);
-      interactives.forEach((el) => {
-        el.removeEventListener("mouseenter", onMouseEnterInteractive);
-        el.removeEventListener("mouseleave", onMouseLeaveInteractive);
-      });
+      cancelAnimationFrame(rafRef.current);
     };
   }, []);
 
   return (
     <>
-      <motion.div
+      <div
         ref={cursorRef}
         className="fixed top-0 left-0 w-10 h-10 rounded-full border border-[#c8ff00]/50 pointer-events-none z-[9998] mix-blend-difference hidden md:block"
-        animate={{
-          scale: isHovering ? 1.8 : 1,
+        style={{
           opacity: isHidden ? 0 : 1,
+          transform: isHovering
+            ? "scale(1.8)"
+            : "scale(1)",
+          transition: "transform 0.3s ease, opacity 0.3s ease",
+          willChange: "transform",
         }}
-        transition={{ duration: 0.3 }}
       />
       <div
         ref={cursorDotRef}
