@@ -61,7 +61,7 @@ export default function Testimonials() {
               initial={{ opacity: 0, y: 40 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.2 + i * 0.15 }}
-              className="p-8 rounded-xl bg-[#141414] border border-white/5 hover:border-[#c8ff00]/20 transition-all duration-500 relative group"
+              className="p-8 rounded-xl bg-[#141414]/80 border border-white/5 hover:border-[#c8ff00]/20 transition-all duration-500 relative group backdrop-blur-sm"
             >
               <div className="text-[#c8ff00] text-6xl font-serif absolute top-4 right-6 opacity-20 group-hover:opacity-40 transition-opacity">
                 &ldquo;
