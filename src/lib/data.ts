@@ -176,4 +176,13 @@ export const artists: ArtistProject[] = [
     images: ["/work/wish/1.jpg"],
     year: "2025",
   },
+  {
+    id: "zakir-khan",
+    artist: "Zakir Khan",
+    tagline: "Storytelling with soul — comedy meets connection",
+    type: "concert",
+    cover: "/work/zakir-khan/1.jpg",
+    images: ["/work/zakir-khan/1.jpg"],
+    year: "2025",
+  },
 ];
