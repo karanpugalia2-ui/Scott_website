@@ -55,6 +55,9 @@ export const artists: ArtistProject[] = [
       "/work/sunidhi-chauhan/5.jpg",
       "/work/sunidhi-chauhan/6.jpg",
       "/work/sunidhi-chauhan/7.jpg",
+      "/work/sunidhi-chauhan/8.jpg",
+      "/work/sunidhi-chauhan/9.jpg",
+      "/work/sunidhi-chauhan/10.jpg",
     ],
     year: "2025",
     featured: true,
@@ -182,7 +185,11 @@ export const artists: ArtistProject[] = [
     tagline: "Storytelling with soul — comedy meets connection",
     type: "concert",
     cover: "/work/zakir-khan/1.jpg",
-    images: ["/work/zakir-khan/1.jpg"],
+    images: [
+      "/work/zakir-khan/1.jpg",
+      "/work/zakir-khan/2.jpg",
+      "/work/zakir-khan/3.jpg",
+    ],
     year: "2025",
   },
 ];
