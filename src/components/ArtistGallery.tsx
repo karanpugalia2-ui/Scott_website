@@ -36,7 +36,7 @@ export default function ArtistGallery({
     <AnimatePresence>
       {artist && (
         <motion.div
-          className="fixed inset-0 z-[10002] flex items-start justify-center bg-black/90 backdrop-blur-sm p-4 md:p-10 overflow-y-auto"
+          className="fixed inset-0 z-[10002] flex flex-col items-center bg-black/90 backdrop-blur-sm p-4 md:p-10"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -44,14 +44,14 @@ export default function ArtistGallery({
           onClick={onClose}
         >
           <motion.div
-            className="w-full max-w-4xl"
+            className="w-full max-w-4xl flex flex-col min-h-0 flex-1"
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 24 }}
             transition={{ duration: 0.25, ease: [0.25, 0.46, 0.45, 0.94] }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-start justify-between gap-4 mb-6 pt-2 md:pt-4">
+            <div className="flex items-start justify-between gap-4 pt-2 md:pt-4 pb-5 shrink-0 relative z-10 bg-black/95 backdrop-blur-md rounded-t-lg">
               <div>
                 <div className="text-[#c8ff00] text-xs tracking-[0.3em] uppercase mb-1 font-medium">
                   {TYPE_LABEL[artist.type]} — {artist.year}
@@ -74,23 +74,31 @@ export default function ArtistGallery({
               </button>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pb-10">
-              {artist.images.map((src, i) => (
-                <div
-                  key={src}
-                  className="relative overflow-hidden rounded-lg ring-1 ring-white/10"
-                >
-                  <img
-                    src={src}
-                    alt={`${artist.artist} — photo ${i + 1}`}
-                    className="w-full h-auto object-cover"
-                    loading="lazy"
-                  />
-                  <span className="absolute top-3 left-3 px-2 py-0.5 bg-black/60 text-[10px] text-white/70 rounded-md">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                </div>
-              ))}
+            <div
+              className="flex-1 min-h-0 overflow-y-auto pb-10 pr-1"
+              onClick={onClose}
+            >
+              <div
+                className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {artist.images.map((src, i) => (
+                  <div
+                    key={src}
+                    className="relative overflow-hidden rounded-lg ring-1 ring-white/10"
+                  >
+                    <img
+                      src={src}
+                      alt={`${artist.artist} — photo ${i + 1}`}
+                      className="w-full h-auto object-cover"
+                      loading="lazy"
+                    />
+                    <span className="absolute top-3 left-3 px-2 py-0.5 bg-black/60 text-[10px] text-white/70 rounded-md">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
           </motion.div>
         </motion.div>
