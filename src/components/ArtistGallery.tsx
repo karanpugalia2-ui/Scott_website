@@ -51,24 +51,24 @@ export default function ArtistGallery({
             transition={{ duration: 0.25, ease: [0.25, 0.46, 0.45, 0.94] }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-start justify-between gap-4 pt-2 md:pt-4 pb-5 shrink-0 relative z-10 bg-black/95 backdrop-blur-md rounded-t-lg">
+            <div className="flex items-start justify-between gap-4 pt-1 md:pt-2 pb-2 shrink-0 relative z-10 bg-black/95 backdrop-blur-md rounded-t-lg">
               <div>
-                <div className="text-[#c8ff00] text-xs tracking-[0.3em] uppercase mb-1 font-medium">
+                <div className="text-[#c8ff00] text-[10px] tracking-[0.2em] uppercase mb-0.5 font-medium">
                   {TYPE_LABEL[artist.type]} — {artist.year}
                 </div>
-                <h3 className="text-2xl md:text-3xl font-bold text-white tracking-tight">
+                <h3 className="text-lg md:text-xl font-bold text-white tracking-tight">
                   {artist.artist}
                 </h3>
                 {artist.tagline && (
-                  <p className="text-[#999] text-sm mt-1">{artist.tagline}</p>
+                  <p className="text-[#999] text-[11px] mt-0.5">{artist.tagline}</p>
                 )}
               </div>
               <button
                 onClick={onClose}
-                className="w-10 h-10 rounded-full border border-white/15 flex items-center justify-center text-white hover:border-[#c8ff00] hover:text-[#c8ff00] transition-colors flex-shrink-0"
+                className="w-7 h-7 rounded-full border border-white/15 flex items-center justify-center text-white hover:border-[#c8ff00] hover:text-[#c8ff00] transition-colors flex-shrink-0"
                 aria-label="Close gallery"
               >
-                <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg viewBox="0 0 24 24" className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M6 6l12 12M18 6L6 18" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </button>
