@@ -44,7 +44,7 @@ export default function ArtistGallery({
           onClick={onClose}
         >
           <motion.div
-            className="w-full max-w-4xl flex flex-col min-h-0 flex-1"
+            className="w-full max-w-5xl flex flex-col min-h-0 flex-1"
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 24 }}
