@@ -2,7 +2,8 @@
 
 import { motion } from "framer-motion";
 import { useRef, useState, useEffect, useCallback } from "react";
-import { artists, type ArtistProject } from "@/lib/data";
+import type { ArtistProject } from "@/lib/content";
+import { useSite } from "@/components/SiteContext";
 import ArtistGallery from "@/components/ArtistGallery";
 
 const DRAG_THRESHOLD = 8;
@@ -33,12 +34,20 @@ function ArtistSlide({
       }}
     >
       <div className="relative aspect-[3/4] overflow-hidden rounded-xl ring-1 ring-white/5 transition-all duration-500">
-        <img
-          src={project.cover}
-          alt={project.artist}
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-          loading="lazy"
-        />
+        {project.cover ? (
+          <img
+            src={project.cover}
+            alt={project.artist}
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+            loading="lazy"
+          />
+        ) : (
+          <div className="absolute inset-0 bg-gradient-to-br from-[#161616] to-[#0a0a0a] flex items-center justify-center">
+            <span className="text-[#333] text-xs tracking-[0.3em] uppercase">
+              No cover
+            </span>
+          </div>
+        )}
 
         {/* Gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
@@ -81,6 +90,7 @@ function ArtistSlide({
 }
 
 export default function Work() {
+  const { artists, content } = useSite();
   const sectionRef = useRef<HTMLDivElement>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -144,11 +154,11 @@ export default function Work() {
             <div className="flex items-center gap-4 mb-4">
               <div className="w-8 h-[1px] bg-[#c8ff00]" />
               <span className="text-sm tracking-[0.3em] uppercase text-[#c8ff00]">
-                Selected Work
+                {content.work.eyebrow}
               </span>
             </div>
             <h2 className="text-4xl md:text-6xl font-bold tracking-tight">
-              Artists & Events
+              {content.work.heading}
             </h2>
           </div>
 
@@ -188,7 +198,7 @@ export default function Work() {
       >
         <div className="px-6 md:px-12 mb-6">
           <span className="text-xs tracking-[0.3em] uppercase text-[#666]">
-            Featured
+            {content.work.featuredLabel}
           </span>
         </div>
         <div
@@ -220,7 +230,7 @@ export default function Work() {
       >
         <div className="px-6 md:px-12 mb-6">
           <span className="text-xs tracking-[0.3em] uppercase text-[#666]">
-            All Projects
+            {content.work.allProjectsLabel}
           </span>
         </div>
         <div
@@ -248,12 +258,20 @@ export default function Work() {
             >
               <div className="aspect-[3/4] rounded-lg mb-3 ring-1 ring-white/5 group-hover:ring-[#c8ff00]/30 group-hover:shadow-[0_0_20px_rgba(200,255,0,0.15)] transition-all duration-300">
                 <div className="relative w-full h-full overflow-hidden rounded-lg">
-                <img
-                  src={project.cover}
-                  alt={project.artist}
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  loading="lazy"
-                />
+                {project.cover ? (
+                  <img
+                    src={project.cover}
+                    alt={project.artist}
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#161616] to-[#0a0a0a] flex items-center justify-center">
+                    <span className="text-[#333] text-[10px] tracking-[0.2em] uppercase">
+                      No cover
+                    </span>
+                  </div>
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
                 <div className="absolute bottom-3 left-3 right-3">
                   <h4 className="text-sm font-bold text-white">

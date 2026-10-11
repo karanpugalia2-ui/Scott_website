@@ -1,5 +1,5 @@
-import type { Metadata } from "next";
 import { Space_Grotesk, JetBrains_Mono } from "next/font/google";
+import { readStore } from "@/lib/store";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -16,39 +16,23 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "SCOTT — Photography & Cinematography",
-  description:
-    "Portfolio of Scott (Karan Pugalia) — Photographer & Cinematographer from Vadodara, India. Specializing in concert photography, music videos, and event coverage.",
-  keywords: [
-    "Scott",
-    "Karan Pugalia",
-    "photographer",
-    "cinematographer",
-    "concert photography",
-    "Vadodara",
-    "India",
-    "music videos",
-    "event coverage",
-  ],
-  openGraph: {
-    title: "SCOTT — Photography & Cinematography",
-    description: "Capturing raw emotions through the lens.",
-    type: "website",
-    images: ["/scott.jpeg"],
-  },
-};
+export default async function RootLayout({
+  children,
+}: LayoutProps<"/">) {
+  const { artists } = await readStore();
+  const preloadCovers = artists
+    .filter((a) => a.featured && a.cover)
+    .slice(0, 3);
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
       className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} antialiased`}
     >
       <head>
-        <link rel="preload" as="image" href="/work/chaar-diwari/1.jpg" />
-        <link rel="preload" as="image" href="/work/seedhe-maut/1.jpg" />
-        <link rel="preload" as="image" href="/work/sunidhi-chauhan/1.jpg" />
+        {preloadCovers.map((a) => (
+          <link key={a.id} rel="preload" as="image" href={a.cover} />
+        ))}
       </head>
       <body className="min-h-screen bg-[#0a0a0a] text-[#ededed]">
         <div className="grain-overlay" />

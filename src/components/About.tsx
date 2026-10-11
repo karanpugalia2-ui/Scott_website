@@ -1,9 +1,12 @@
 "use client";
 
-import { motion, useInView, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import { useSite } from "@/components/SiteContext";
 
 export default function About() {
+  const { content } = useSite();
+  const about = content.about;
   const sectionRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -37,13 +40,13 @@ export default function About() {
           <div className="flex items-center gap-4 mb-4">
             <div className="w-8 h-[1px] bg-[#c8ff00]" />
             <span className="text-sm tracking-[0.3em] uppercase text-[#c8ff00]">
-              About
+              {about.eyebrow}
             </span>
           </div>
           <h2 className="text-4xl md:text-6xl font-bold tracking-tight">
-            The Story Behind
+            {about.headingLine1}
             <br />
-            <span className="text-stroke">the Lens</span>
+            <span className="text-stroke">{about.headingLine2}</span>
           </h2>
         </motion.div>
 
@@ -65,8 +68,8 @@ export default function About() {
                 style={{ scale: imageScale }}
               >
                 <img
-                  src="/scott.jpeg"
-                  alt="Scott — Karan Pugalia"
+                  src={about.photo}
+                  alt={about.photoAlt}
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   loading="lazy"
                 />
@@ -83,10 +86,11 @@ export default function About() {
                 className="mt-6"
               >
                 <h3 className="text-2xl font-bold text-[#ededed]">
-                  Scott<span className="text-[#c8ff00]">.</span>
+                  {about.name.replace(/\.$/, "")}
+                  <span className="text-[#c8ff00]">.</span>
                 </h3>
                 <p className="text-sm text-[#666] mt-1">
-                  Karan Pugalia — Vadodara, India
+                  {about.subtitle}
                 </p>
               </motion.div>
             </div>
@@ -101,30 +105,25 @@ export default function About() {
             className="lg:col-span-3"
           >
             <div className="space-y-8 text-lg md:text-xl leading-relaxed">
-              {[
-                { delay: 0.4, color: "text-[#ccc]", children: (
-                  <>My journey began in <span className="text-[#ededed] font-medium">Class 9</span> with nothing more than a <span className="text-[#c8ff00]">mobile phone</span> — photographing the streets of Vadodara and learning composition, light, and storytelling.</>
-                )},
-                { delay: 0.5, color: "text-[#999]", children: (
-                  <>This passion evolved into work with cafés and local businesses, and before completing Class 12, I joined film school — where I discovered my strongest interest in <em className="text-[#c8ff00] not-italic font-medium">concerts, live events, and artists</em>.</>
-                )},
-                { delay: 0.6, color: "text-[#999]", children: (
-                  <>Over 4–5 years of consistent work, I kept investing in my craft and saving from my own earnings — eventually purchasing my first professional camera entirely through my own work.</>
-                )},
-                { delay: 0.7, color: "text-[#ccc] text-xl md:text-2xl font-medium leading-relaxed", children: (
-                  <>From a mobile phone to professional cinema equipment — driven by one thing: <em className="text-[#c8ff00] not-italic">the desire to create</em>.</>
-                )},
-              ].map((p, i) => (
+              {about.paragraphs.map((html, i) => (
                 <motion.p
                   key={i}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: p.delay, duration: 0.6 }}
-                  className={p.color}
-                >
-                  {p.children}
-                </motion.p>
+                  transition={{
+                    delay: 0.4 + i * 0.1,
+                    duration: 0.6,
+                  }}
+                  className={
+                    i === about.paragraphs.length - 1
+                      ? "text-[#ccc] text-xl md:text-2xl font-medium leading-relaxed"
+                      : i === 0
+                      ? "text-[#ccc]"
+                      : "text-[#999]"
+                  }
+                  dangerouslySetInnerHTML={{ __html: html }}
+                />
               ))}
             </div>
 
@@ -141,7 +140,7 @@ export default function About() {
                 data-cursor-hover
                 className="magnetic-btn inline-flex items-center gap-3 px-8 py-4 bg-[#c8ff00] text-[#0a0a0a] rounded-full font-semibold text-sm tracking-[0.15em] uppercase hover:bg-[#d4ff33] transition-colors duration-300"
               >
-                Let&apos;s Collaborate
+                {about.ctaLabel}
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                   <path
                     d="M3 8H13M13 8L9 4M13 8L9 12"

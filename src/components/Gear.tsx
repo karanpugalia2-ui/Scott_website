@@ -3,90 +3,14 @@
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import Image from "next/image";
-
-const gearItems = [
-  {
-    id: "fx3",
-    name: "Sony FX3",
-    category: "Camera Body",
-    tagline: "The Cinema Line workhorse",
-    description:
-      "Full-frame sensor, 4K 120fps, S-Log3. Built for run-and-gun filmmaking with cinema-grade internals in a compact body.",
-    specs: ["Full-Frame 10.2MP", "4K 120fps", "S-Log3 / S-Cinetone", "Dual Card Slots"],
-    image: "/gear/sony-fx3.png",
-    imageW: 900,
-    imageH: 600,
-    span: "",
-    link: "https://electronics.sony.com/imaging/camcorders/all-camcorders/p/ilme-fx3",
-    accent: "#c8ff00",
-  },
-  {
-    id: "2470",
-    name: "FE 24-70mm f/2.8 GM II",
-    category: "Lens",
-    tagline: "The versatile king of glass",
-    description:
-      "From wide concert shots to tight artist portraits — razor-sharp optics with buttery bokeh.",
-    specs: ["f/2.8 Constant", "Nano AR Coating II", "XD Linear Motors", "695g"],
-    image: "/gear/sony-2470gm.png",
-    imageW: 650,
-    imageH: 400,
-    span: "",
-    link: "https://electronics.sony.com/imaging/lenses/all-e-mount/p/sel2470gm2",
-    accent: "#ff6b35",
-  },
-  {
-    id: "insta360",
-    name: "Insta360 X3",
-    category: "360° Action Camera",
-    tagline: "Capture everything, reframe later",
-    description:
-      "360-degree capture means I never miss a moment. Shoot first, choose the angle in post.",
-    specs: ["5.7K 360°", "72MP Photos", "FlowState", "Waterproof 10m"],
-    image: "/gear/insta360-x3.png",
-    imageW: 450,
-    imageH: 450,
-    span: "",
-    link: "https://www.insta360.com/product/insta360-x3",
-    accent: "#a855f7",
-  },
-  {
-    id: "handycam",
-    name: "Handycam",
-    category: "Camcorder",
-    tagline: "Always ready to roll",
-    description:
-      "Captures behind-the-scenes moments, b-roll, and spontaneous footage on the go.",
-    specs: ["Optical Zoom", "SteadyShot", "NightShot Plus", "Compact"],
-    image: "/gear/handycam.png",
-    imageW: 550,
-    imageH: 350,
-    span: "",
-    link: "https://electronics.sony.com/imaging/camcorders/all-camcorders/p/fdrax43a-b",
-    accent: "#f43f5e",
-  },
-  {
-    id: "rs5",
-    name: "DJI RS 5 Combo",
-    category: "Gimbal Stabilizer",
-    tagline: "Buttery smooth motion",
-    description:
-      "3-axis stabilization that turns shaky handheld footage into cinema-grade steady shots.",
-    specs: ["3-Axis Stabilization", "2.5kg Payload", "Focus Motor", "1Hr Full Charge"],
-    image: "/gear/dji-rs5.png",
-    imageW: 350,
-    imageH: 550,
-    span: "",
-    link: "https://store.dji.com/product/dji-rs-5",
-    accent: "#00d4ff",
-  },
-];
+import type { GearItem } from "@/lib/content";
+import { useSite } from "@/components/SiteContext";
 
 function GearCard({
   item,
   index,
 }: {
-  item: (typeof gearItems)[0];
+  item: GearItem;
   index: number;
 }) {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -203,6 +127,10 @@ function GearCard({
 }
 
 export default function Gear() {
+  const { content } = useSite();
+  const gear = content.gear;
+  const leftItems = gear.items.filter((i) => i.column !== "right");
+  const rightItems = gear.items.filter((i) => i.column === "right");
   const sectionRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -246,15 +174,14 @@ export default function Gear() {
           <div className="flex items-center gap-4 mb-4">
             <div className="w-8 h-[1px] bg-[#c8ff00]" />
             <span className="text-sm tracking-[0.3em] uppercase text-[#c8ff00]">
-              Arsenal
+              {gear.eyebrow}
             </span>
           </div>
           <h2 className="text-4xl md:text-6xl font-bold tracking-tight">
-            The Gear
+            {gear.heading}
           </h2>
           <p className="text-[#999] mt-4 max-w-lg text-lg">
-            Tools of the trade. Every piece chosen for reliability, quality,
-            and the ability to perform when it matters most.
+            {gear.description}
           </p>
         </motion.div>
       </div>
@@ -264,14 +191,18 @@ export default function Gear() {
         <div className="gear-layout">
           {/* Left: 2×2 grid */}
           <div className="gear-grid-left">
-            {gearItems.filter((i) => i.id !== "rs5").map((item, i) => (
+            {leftItems.map((item, i) => (
               <GearCard key={item.id} item={item} index={i} />
             ))}
           </div>
           {/* Right: tall gimbal */}
-          <div className="gear-grid-right">
-            <GearCard item={gearItems.find((i) => i.id === "rs5")!} index={4} />
-          </div>
+          {rightItems.length > 0 && (
+            <div className="gear-grid-right">
+              {rightItems.map((item, i) => (
+                <GearCard key={item.id} item={item} index={leftItems.length + i} />
+              ))}
+            </div>
+          )}
         </div>
       </div>
 

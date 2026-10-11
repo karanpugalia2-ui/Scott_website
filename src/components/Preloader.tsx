@@ -2,8 +2,11 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
+import { useSite } from "@/components/SiteContext";
 
 export default function Preloader({ onComplete }: { onComplete: () => void }) {
+  const { content } = useSite();
+  const preloader = content.preloader;
   const [count, setCount] = useState(0);
   const [isExiting, setIsExiting] = useState(false);
 
@@ -42,7 +45,8 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
             transition={{ duration: 1, ease: "easeOut" }}
             className="text-4xl md:text-6xl font-bold tracking-[0.3em] text-[#ededed] mb-12"
           >
-            SCOTT<span className="text-[#c8ff00]">.</span>
+            {preloader.brand}
+            <span className="text-[#c8ff00]">.</span>
           </motion.div>
 
           {/* Progress bar container */}
@@ -83,8 +87,8 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
           >
-            <span>Photography & Cinematography</span>
-            <span>Vadodara, India</span>
+            <span>{preloader.bottomLeft}</span>
+            <span>{preloader.bottomRight}</span>
           </motion.div>
         </motion.div>
       )}

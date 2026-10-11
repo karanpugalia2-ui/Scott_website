@@ -2,31 +2,44 @@
 
 import { motion } from "framer-motion";
 import { useRef } from "react";
+import { useSite } from "@/components/SiteContext";
+import type { SocialIcon } from "@/lib/content";
 
-const socialLinks = [
-  {
-    href: "https://www.instagram.com/scottt_73/",
-    label: "Instagram",
-    icon: (
+function SocialGlyph({ icon }: { icon: SocialIcon }) {
+  if (icon === "instagram") {
+    return (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
         <circle cx="12" cy="12" r="5" />
         <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none" />
       </svg>
-    ),
-  },
-  {
-    href: "https://wa.me/919825335611",
-    label: "WhatsApp",
-    icon: (
+    );
+  }
+  if (icon === "whatsapp") {
+    return (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
       </svg>
-    ),
-  },
-];
+    );
+  }
+  if (icon === "youtube") {
+    return (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.5 31.5 0 0 0 0 12a31.5 31.5 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.5 31.5 0 0 0 24 12a31.5 31.5 0 0 0-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z" />
+      </svg>
+    );
+  }
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7" />
+      <path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7" />
+    </svg>
+  );
+}
 
 export default function Contact() {
+  const { content } = useSite();
+  const contact = content.contact;
   const sectionRef = useRef<HTMLDivElement>(null);
 
   return (
@@ -51,29 +64,27 @@ export default function Contact() {
           <div className="flex items-center justify-center gap-4 mb-4">
             <div className="w-8 h-[1px] bg-[#c8ff00]" />
             <span className="text-sm tracking-[0.3em] uppercase text-[#c8ff00]">
-              Get in Touch
+              {contact.eyebrow}
             </span>
             <div className="w-8 h-[1px] bg-[#c8ff00]" />
           </div>
 
           <h2 className="text-4xl md:text-7xl font-bold tracking-tight mb-8">
-            Let&apos;s Create
+            {contact.headingLine1}
             <br />
-            <span className="text-[#c8ff00]">Something Together</span>
+            <span className="text-[#c8ff00]">{contact.headingLine2}</span>
           </h2>
 
           <p className="text-[#999] text-lg md:text-xl max-w-2xl mx-auto mb-12 leading-relaxed">
-            Have a project in mind? Need coverage for your next event? Or just want
-            to chat about photography? I&apos;m always open to new collaborations and
-            creative challenges.
+            {contact.paragraph}
           </p>
 
           <a
-            href="mailto:karanpugalia2@gmail.com"
+            href={`mailto:${contact.email}`}
             data-cursor-hover
             className="magnetic-btn inline-flex items-center gap-4 px-10 py-5 bg-[#c8ff00] text-[#0a0a0a] rounded-full font-bold text-lg tracking-wider hover:bg-[#d4ff33] transition-all duration-300 mb-16"
           >
-            karanpugalia2@gmail.com
+            {contact.email}
             <svg width="20" height="20" viewBox="0 0 16 16" fill="none">
               <path
                 d="M3 8H13M13 8L9 4M13 8L9 12"
@@ -88,13 +99,14 @@ export default function Contact() {
 
         {/* Social links */}
         <div className="flex justify-center gap-5 mb-16">
-          {socialLinks.map((link, i) => (
+          {contact.socials.map((link, i) => (
             <motion.a
-              key={link.label}
+              key={link.id || link.label}
               href={link.href}
               target="_blank"
               rel="noopener noreferrer"
               data-cursor-hover
+              aria-label={link.label}
               className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-[#666] hover:text-[#c8ff00] hover:border-[#c8ff00]/40 transition-all duration-300"
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -105,7 +117,7 @@ export default function Contact() {
                 ease: [0.25, 0.46, 0.45, 0.94],
               }}
             >
-              {link.icon}
+              <SocialGlyph icon={link.icon} />
             </motion.a>
           ))}
         </div>
@@ -120,12 +132,12 @@ export default function Contact() {
         className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4"
       >
         <div className="text-sm text-[#666]">
-          © 2025 SCOTT. All rights reserved.
+          {contact.footerCopyright}
         </div>
         <div className="flex items-center gap-2 text-sm text-[#666]">
-          <span>Crafted with</span>
-          <span className="text-[#c8ff00]">♥</span>
-          <span>from Vadodara, India</span>
+          <span>{contact.footerCrafted}</span>
+          <span className="text-[#c8ff00]">{contact.footerHeart}</span>
+          <span>{contact.footerLocation}</span>
         </div>
       </motion.footer>
     </section>

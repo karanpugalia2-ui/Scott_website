@@ -2,8 +2,11 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import { useSite } from "@/components/SiteContext";
 
 export default function Hero() {
+  const { content } = useSite();
+  const hero = content.hero;
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -27,14 +30,14 @@ export default function Hero() {
         style={{ scale: videoScale, opacity: videoOpacity }}
       >
         <video
-          src="/videos/chaar-diwari-bits-goa.mp4"
+          src={hero.video}
           autoPlay
           muted
           loop
           playsInline
           preload="metadata"
           className="w-full h-full object-cover"
-          poster="/work/chaar-diwari/1.jpg"
+          poster={hero.poster}
         />
         {/* Minimal overlay — just enough for text readability */}
         <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/50 via-transparent to-[#0a0a0a]/10" />
@@ -53,7 +56,7 @@ export default function Hero() {
           className="mb-6"
         >
           <span className="text-sm tracking-[0.3em] uppercase text-[#c8ff00] font-medium">
-            Photography & Cinematography
+            {hero.eyebrow}
           </span>
         </motion.div>
 
@@ -64,7 +67,7 @@ export default function Hero() {
             animate={{ y: 0 }}
             transition={{ duration: 1.2, delay: 1, ease: [0.76, 0, 0.24, 1] }}
           >
-            SCOTT
+            {hero.titleLine1}
           </motion.h1>
         </div>
 
@@ -75,7 +78,7 @@ export default function Hero() {
             animate={{ y: 0 }}
             transition={{ duration: 1.2, delay: 1.1, ease: [0.76, 0, 0.24, 1] }}
           >
-            VISUALS
+            {hero.titleLine2}
           </motion.h1>
         </div>
 
@@ -86,8 +89,7 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1.4 }}
           >
-            Capturing raw emotions through the lens — from electrifying concerts
-            to intimate portraits. Based in Vadodara, creating across India.
+            {hero.paragraph}
           </motion.p>
 
           <motion.div
@@ -98,7 +100,7 @@ export default function Hero() {
           >
             <div className="w-12 h-[1px] bg-[#c8ff00]" />
             <span className="text-sm tracking-[0.2em] uppercase text-[#999]">
-              Scroll to explore
+              {hero.scrollHint}
             </span>
           </motion.div>
         </div>

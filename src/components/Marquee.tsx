@@ -1,37 +1,21 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useRef } from "react";
-
-const marqueeItems = [
-  "CONCERTS",
-  "•",
-  "PORTRAITS",
-  "•",
-  "MUSIC VIDEOS",
-  "•",
-  "EVENTS",
-  "•",
-  "ARTIST TOURS",
-  "•",
-  "LIVE MUSIC",
-  "•",
-  "CONCERTS",
-  "•",
-  "PORTRAITS",
-  "•",
-  "MUSIC VIDEOS",
-  "•",
-  "EVENTS",
-  "•",
-  "ARTIST TOURS",
-  "•",
-  "LIVE MUSIC",
-  "•",
-];
+import { useRef, useMemo } from "react";
+import { useSite } from "@/components/SiteContext";
 
 export default function Marquee() {
+  const { content } = useSite();
   const ref = useRef<HTMLDivElement>(null);
+
+  const marqueeItems = useMemo(
+    () =>
+      content.marquee.items.flatMap((item) => [
+        item,
+        "•",
+      ]),
+    [content.marquee.items],
+  );
 
   return (
     <section ref={ref} className="py-12 overflow-hidden border-y border-white/5">

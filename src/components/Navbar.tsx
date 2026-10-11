@@ -3,15 +3,11 @@
 import { motion, useScroll, useTransform, useMotionTemplate } from "framer-motion";
 import Link from "next/link";
 import { useState } from "react";
-
-const navLinks = [
-  { name: "Work", href: "#work" },
-  { name: "About", href: "#about" },
-  { name: "Gear", href: "#gear" },
-  { name: "Contact", href: "#contact" },
-];
+import { useSite } from "@/components/SiteContext";
 
 export default function Navbar() {
+  const { content } = useSite();
+  const navLinks = content.nav.links;
   const [menuOpen, setMenuOpen] = useState(false);
   const { scrollY } = useScroll();
 
@@ -35,7 +31,8 @@ export default function Navbar() {
           transition={{ duration: 0.8, delay: 0.2 }}
         >
           <Link href="/" className="text-lg font-bold tracking-tight">
-            SCOTT<span className="text-[#c8ff00]">.</span>
+            {content.nav.brand}
+            <span className="text-[#c8ff00]">.</span>
           </Link>
         </motion.div>
 

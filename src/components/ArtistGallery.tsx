@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import type { ArtistProject } from "@/lib/data";
+import type { ArtistProject } from "@/lib/content";
 
 const TYPE_LABEL: Record<ArtistProject["type"], string> = {
   concert: "Concert",
@@ -82,6 +82,11 @@ export default function ArtistGallery({
                 className="grid grid-cols-1 sm:grid-cols-2 gap-4"
                 onClick={(e) => e.stopPropagation()}
               >
+                {artist.images.length === 0 && (
+                  <div className="col-span-full py-20 text-center text-[#555] text-sm tracking-[0.2em] uppercase">
+                    No photos yet
+                  </div>
+                )}
                 {artist.images.map((src, i) => (
                   <div
                     key={src}
